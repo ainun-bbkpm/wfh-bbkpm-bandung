@@ -413,7 +413,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 var no_abs = response.pegawai.no_abs
                 var nip = response.pegawai.nip
 
-                console.log(pass);
+
 
 
                 notif_password(response.pegawai.password)
