@@ -376,6 +376,7 @@ class remun_m extends CI_Model
             LEFT JOIN pegawai as pegawai3 ON pegawai3.nip=ref_wfh.`approved_by`
         WHERE atasan.`nip_atasan` = '$nip_atasan'
         GROUP BY pegawai.`nama_pegawai`, ref_wfh.`tgl_absen`
+        ORDER BY ref_wfh.`tgl_absen` DESC
         ";
 
         return $this->db->query($query);
