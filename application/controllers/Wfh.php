@@ -654,7 +654,7 @@ class Wfh extends CI_Controller
 
 
                 $config['upload_path']          = "./uploads/wfh/$name_folder";
-                $config['allowed_types']        = 'xls|xlsx|pdf|jpg|jpeg|png|docx|doc|rar|zip';
+                $config['allowed_types']        = 'xls|xlsx|pdf|jpg|jpeg|png|docx|doc|rar|zip|ppt|pptx';
                 $config['max_size']             = 5000;
                 $this->load->library('upload', $config);
 
