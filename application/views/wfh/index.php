@@ -204,7 +204,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </div>
 
     <footer class="footer bg-light border-right pl-4">
-        <h5>BBKPM BANDUNG @ 2019</h5>
+        <h5>BBKPM BANDUNG @ 2020</h5>
     </footer>
 
 
