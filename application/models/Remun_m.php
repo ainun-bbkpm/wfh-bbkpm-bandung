@@ -350,7 +350,7 @@ class remun_m extends CI_Model
         pegawai2.`nama_pegawai` AS nama_atasan,
         pegawai.`nama_pegawai` AS nama_pegawai,
        
-        atasan.`atasan_ke` AS atasan_ke,
+        atasan_wfh.`atasan_ke` AS atasan_ke,
 
         ref_wfh.*,
         pegawai3.nama_pegawai as nama_approved_by
@@ -358,15 +358,15 @@ class remun_m extends CI_Model
         
         FROM
         
-        atasan
+        atasan_wfh
 
 
         RIGHT JOIN pegawai
-            ON pegawai.`nip` = atasan.`nip_pegawai`
+            ON pegawai.`nip` = atasan_wfh.`nip_pegawai`
 
 
         LEFT JOIN pegawai AS pegawai2
-            ON pegawai2.`nip` = atasan.`nip_atasan`
+            ON pegawai2.`nip` = atasan_wfh.`nip_atasan`
             
        
 		
@@ -374,8 +374,9 @@ class remun_m extends CI_Model
             LEFT JOIN ref_wfh ON pegawai.`nip`=ref_wfh.`id_pegawai`
             
             LEFT JOIN pegawai as pegawai3 ON pegawai3.nip=ref_wfh.`approved_by`
-        WHERE atasan.`nip_atasan` = '$nip_atasan'
+        WHERE atasan_wfh.`nip_atasan` = '$nip_atasan'
         GROUP BY pegawai.`nama_pegawai`, ref_wfh.`tgl_absen`
+        ORDER BY ref_wfh.`tgl_absen` DESC
         ";
 
         return $this->db->query($query);
@@ -400,6 +401,17 @@ class remun_m extends CI_Model
                 INNER JOIN pegawai B ON B.nip = A.id_pegawai
                 WHERE DATE_FORMAT(A.tgl_absen,'%d-%m-%Y') BETWEEN ? AND ?
                 AND approved_by = ?";
+        $query = $this->db->query($sql, $where);
+
+        return $query->result_array();
+    }
+
+    public function rekap_kepegawaian($where)
+    {
+        $sql = "SELECT COALESCE(B.nip2,B.nik) AS id, B.nama_pegawai, A.tgl_absen, A.jam_absen_hadir, A.jam_absen_pertengahan, A.jam_absen_pulang, A.nilai_kinerja, (SELECT C.nama_pegawai FROM pegawai C WHERE C.nip = ?) AS penilai, (SELECT D.nip2 FROM pegawai D WHERE D.nip = ?) AS nip
+        FROM ref_wfh A
+        INNER JOIN pegawai B ON B.nip = A.id_pegawai
+        WHERE  DATE_FORMAT(A.tgl_absen,'%d-%m-%Y') BETWEEN ? AND ?";
         $query = $this->db->query($sql, $where);
 
         return $query->result_array();

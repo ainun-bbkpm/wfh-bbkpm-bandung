@@ -8,6 +8,7 @@ class Login extends CI_Controller
     public function index()
     {
         $this->load->model('Login_m', 'login');
+        $this->load->model('Pegawai_m', 'pegawai');
 
 
         switch ($_SERVER['REQUEST_METHOD']) {
@@ -189,7 +190,7 @@ class Login extends CI_Controller
                 $id = $this->input->input_stream('id_login');
                 $data_modif = [
 
-                    'nip_pegawai' => $this->input->input_stream('nip_pegawai'),
+
                     'email' => $this->input->input_stream('email'),
                     'no_hp' => $this->input->input_stream('no_hp'),
                     'username' => $this->input->input_stream('username'),
@@ -198,7 +199,26 @@ class Login extends CI_Controller
                     'status' => 1,
                     'updated_at' => date("Y-m-d H:i:s")
                 ];
-                // simpan ke database login
+
+                $alamat_nm_propinsi = $this->input->input_stream('alamat_nm_propinsi');
+                $alamat_nm_kab_kota = $this->input->input_stream('alamat_nm_kab_kota');
+                $alamat_nm_kec = $this->input->input_stream('alamat_nm_kec');
+                $alamat_nm_desa = $this->input->input_stream('alamat_nm_desa');
+                $alamat = $this->input->input_stream('alamat');
+                $nip = $this->session->nip;
+                $alamat_pegawai = [
+                    'alamat_nm_propinsi' => $alamat_nm_propinsi,
+                    'alamat_nm_kab_kota' => $alamat_nm_kab_kota,
+                    'alamat_nm_kec' => $alamat_nm_kec,
+                    'alamat_nm_desa' => $alamat_nm_desa,
+                    'alamat' => $alamat
+                ];
+
+                //Update ALamat di Pegawai
+
+                $this->pegawai->update($alamat_pegawai, $nip);
+
+                // uodate ke database login
                 $this->login->update($data_modif, $id);
                 $response = ['pesan' => 'Ok'];
                 $this->output
@@ -309,7 +329,7 @@ class Login extends CI_Controller
 
         $config['upload_path']          = './uploads/pegawai/';
         $config['allowed_types']        = 'gif|jpg|png';
-        $config['max_size']             = 90;
+        $config['max_size']             = 200;
         // $config['max_width']            = 1924;
         // $config['max_height']           = 1768;
 
@@ -319,7 +339,10 @@ class Login extends CI_Controller
             $error = array('error' => $this->upload->display_errors());
 
             // $this->load->view('upload_form', $error);
-            echo  json_encode($error);
+            // echo  json_encode($error);
+            $data['status'] = 2;
+            // $data['respon'] = "Data Nilai Kerja atau catatan tidak boleh kosong";
+            $data['respon'] =  $this->upload->display_errors('<li class="text-danger">', '</li>');
         } else {
             $data = array('upload_data' => $this->upload->data());
 
@@ -341,6 +364,17 @@ class Login extends CI_Controller
             // simpan ke database login
             $this->login->update($data_modif, $id_login);
             // $this->load->view('upload_success', $data);
+            $data['status'] = 1;
+            // $data['respon'] = "Data Nilai Kerja atau catatan tidak boleh kosong";
+            $data['respon'] = "Berhasil disimpan";
         }
+
+        $response = $data;
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+            ->_display();
+        exit;
     }
 }

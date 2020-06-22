@@ -1,6 +1,6 @@
 <div class="bg-light border-right" id="sidebar-wrapper">
     <div class="sidebar-heading bg-red">
-        Remunerasi
+        WFH
     </div>
     <div class="list-group list-group-flush">
         <a href="<?php echo  site_url('dashboard') ?>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
@@ -23,6 +23,7 @@
 
             <a href="<?php echo  site_url('dashboard/penilaian') ?>" class="list-group-item list-group-item-action bg-light">Penilaian</a>
             <a href="<?php echo  site_url('dashboard/unit') ?>" class="list-group-item list-group-item-action bg-light">Unit Kerja</a>
+            <a href="<?php echo  site_url('dashboard/wfh') ?>" class="list-group-item list-group-item-action bg-light">SiRamaha</a>
 
             <!-- Ini Buat PSD / RINA -->
         <?php } elseif (($this->session->level == 1) and ($this->session->nip == 228) and ($this->session->nip != 320) and ($this->session->nip != 121)) { ?>

@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Pemantauan Kinerja WFH</title>
+    <title>Dashboard Pemantauan SiRAMAH</title>
 
 
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
@@ -31,13 +31,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 </head>
 
-<body>
+<body style="background-color: #1bbffa;">
     <div class="d-flex" id="wrapper">
 
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading bg-red">
-                <a href="<?php echo  base_url() ?>"> Work From Home</a>
+            <div class="sidebar-heading bg-red" style="background-color: #ACCE22;">
+                <a href="<?php echo  base_url() ?>"> SiRAMAH</a>
             </div>
             <div class="list-group list-group-flush">
                 <?php
@@ -401,11 +401,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 url: '<?php echo site_url('wfh/api_getWfh_where_idwfh?wfh=') ?>' + nip,
                 method: 'GET',
                 success: function(res) {
-                    // console.log(res);
+                    console.log(res);
                     if (res.data.status == 0) { //masih berjalan belum absen pulang, maka belum bisa dinilai
                         Swal.fire(
                             'Upss',
                             'Pegawai belum absen pulang, tidak bisa',
+                            'error'
+                        )
+                    } else if (res.data.status == 2) {
+                        Swal.fire(
+                            'Upss',
+                            'Anda sudah menilai pegawai ini',
                             'error'
                         )
                     } else {

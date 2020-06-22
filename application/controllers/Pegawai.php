@@ -479,6 +479,214 @@ class Pegawai extends CI_Controller
 	}
 
 
+	/// WFH
+	public function atasan_wfh()
+	{
+		$id_pegawai = $this->input->get('id');
+		$token = $this->input->get('token');
+		if (sha1($id_pegawai) == $token) {
+			$datapegawai = $this->pegawai->find($id_pegawai);
+			if ($datapegawai->num_rows() > 0) {
+				// print_r($this->jabatan->getByIdUnitKerja($datapegawai->row()->id_pegawai));
+				// print_r($this->atasan->getByNipPegawai($id_pegawai)->result());
+				// die();
+				$data = [
+					'pegawai' => $datapegawai->row(),
+					'atasan_all' => $this->atasan->getByNipPegawaiWFH($id_pegawai),
+					'pegawai_all' => $this->pegawai->getAllJoin(),
+					'akses_all' => $this->akses->getAll(),
+					'id' => $id_pegawai,
+					'token' => $token,
+
+
+				];
+
+				$this->load->view('atasan_wfh/index', $data);
+			} else {
+				$this->session->set_flashdata('error', "Id Tidak ditemukan");
+				redirect('dashboard/pegawai');
+			}
+		} else {
+			$this->session->set_flashdata('warning', "Token Bermasalah");
+			redirect('dashboard/pegawai');
+		}
+	}
+	public function atasan_add_wfh()
+	{
+		$id_pegawai = $this->input->get('id');
+		$token = $this->input->get('token');
+		if (sha1($id_pegawai) == $token) {
+			$datapegawai = $this->pegawai->find($id_pegawai);
+			if ($datapegawai->num_rows() > 0) {
+				// print_r($this->jabatan->getByIdUnitKerja($datapegawai->row()->id_pegawai));
+				// print_r($this->atasan->getByNipPegawai($id_pegawai)->result());
+				// die();
+				$data = [
+					'pegawai' => $datapegawai->row(),
+					'atasan_all' => $this->atasan->getByNipPegawaiWFH($id_pegawai),
+					'pegawai_all' => $this->pegawai->getAllJoin(),
+					'akses_all' => $this->akses->getAll(),
+
+
+				];
+
+				$this->load->view('atasan_wfh/tambah', $data);
+			} else {
+				$this->session->set_flashdata('error', "Id Tidak ditemukan");
+				redirect('dashboard/pegawai');
+			}
+		} else {
+			$this->session->set_flashdata('warning', "Token Bermasalah");
+			redirect('dashboard/pegawai');
+		}
+	}
+	public function atasan_edit_wfh()
+	{
+		$id_pegawai = $this->input->get('id');
+		$token = $this->input->get('token');
+		$id_atasan = $this->input->get('id_atasan');
+		if (sha1($id_pegawai) == $token) {
+			$datapegawai = $this->pegawai->find($id_pegawai);
+			if ($datapegawai->num_rows() > 0) {
+				// print_r($this->jabatan->getByIdUnitKerja($datapegawai->row()->id_pegawai));
+				// print_r($this->atasan->getByNipPegawai($id_pegawai)->result());
+				// die();
+				$data = [
+					'pegawai' => $datapegawai->row(),
+					'atasan' => $this->atasan->find_wfh($id_atasan)->row(),
+					'pegawai_all' => $this->pegawai->getAllJoin(),
+					'akses_all' => $this->akses->getAll(),
+
+
+				];
+
+				$this->load->view('atasan_wfh/edit', $data);
+			} else {
+				$this->session->set_flashdata('error', "Id Tidak ditemukan");
+				redirect('dashboard/pegawai');
+			}
+		} else {
+			$this->session->set_flashdata('warning', "Token Bermasalah");
+			redirect('dashboard/pegawai');
+		}
+	}
+
+
+
+	public function atasan_simpan_wfh()
+	{
+
+
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('nip_atasan', 'Id Atasn', 'required');
+		$this->form_validation->set_rules('nip_pegawai', 'Id Pegawai', 'required');
+		$this->form_validation->set_rules('id_hak_akses', 'Id hak akses', 'required');
+		$this->form_validation->set_rules('atasan_ke', 'Id hak akses', 'required');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = validation_errors('<li class="text-danger">', '</li>');
+			$this->session->set_flashdata('error', "$errors");
+			// header('Location: ' . $_SERVER['HTTP_REFERER']);
+			echo "<script>window.history.go(-2);</script>";
+		} else {
+
+
+			// print_r($_POST);
+			if (isset($_POST['exampleRadios'])) {
+				# code...
+				$exampleRadios = $this->input->post('exampleRadios');
+				if ($exampleRadios == 1) {
+					// echo "Dia sebagai Pejabat penilai";
+					$pejabat_penilai = 1;
+					$atasan_langsung = 0;
+				} else {
+					// echo "Pejabat langsung atasan penilai";
+					$pejabat_penilai = 0;
+					$atasan_langsung = 1;
+				}
+			} else {
+				$pejabat_penilai = 0;
+				$atasan_langsung = 0;
+			}
+
+			// die();
+			$datasimpanatasan = [
+				'nip_atasan' => $this->input->post('nip_atasan'),
+				'nip_pegawai' => $this->input->post('nip_pegawai'),
+				'id_hak_akses' => $this->input->post('id_hak_akses'),
+				'atasan_ke' => $this->input->post('atasan_ke'),
+				'pejabat_penilai' => $pejabat_penilai,
+				'atasan_langsung' => $atasan_langsung,
+				'created_at' => date("Y-m-d H:i:s")
+
+			];
+			// print_r($datasimpanatasan);
+			// die();
+			// print_r($_POST);
+			// die();
+			$this->atasan->simpan_wfh($datasimpanatasan);
+			$this->session->set_flashdata('success', "Berhasil disimpan");
+			// header('Location: ' . $_SERVER['HTTP_REFERER']);
+			echo "<script>window.history.go(-2);</script>";
+		}
+	}
+
+
+	public function atasan_update_wfh()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('id_atasan', 'Id Atasn', 'required');
+		$this->form_validation->set_rules('nip_atasan', 'Id Atasn', 'required');
+		$this->form_validation->set_rules('nip_pegawai', 'Id Pegawai', 'required');
+		$this->form_validation->set_rules('id_hak_akses', 'Id hak akses', 'required');
+		$this->form_validation->set_rules('atasan_ke', 'Id hak akses', 'required');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = validation_errors('<li class="text-danger">', '</li>');
+			$this->session->set_flashdata('error', "$errors");
+			// header('Location: ' . $_SERVER['HTTP_REFERER']);
+			echo "<script>window.history.go(-2);</script>";
+		} else {
+			$id_atasan = $this->input->post('id_atasan');
+			$datasimpanatasan = [
+				'nip_atasan' => $this->input->post('nip_atasan'),
+				'nip_pegawai' => $this->input->post('nip_pegawai'),
+				'id_hak_akses' => $this->input->post('id_hak_akses'),
+				'atasan_ke' => $this->input->post('atasan_ke'),
+				'updated_at' => date("Y-m-d H:i:s")
+			];
+			// print_r($datasimpanatasan);
+			$this->atasan->update_wfh($datasimpanatasan, $id_atasan);
+			$this->session->set_flashdata('success', "Berhasil Diperbarui");
+			// header('Location: ' . $_SERVER['HTTP_REFERER']);
+			echo "<script>window.history.go(-2);</script>";
+		}
+	}
+
+	public function atasan_hapus_wfh()
+	{
+		$id_atasan = $this->input->post('id_hapus');
+
+		$dataatasan = $this->atasan->find_wfh($id_atasan);
+		if ($dataatasan->num_rows() > 0) {
+			$this->atasan->hapus_wfh($id_atasan);
+			$this->session->set_flashdata('success', "Berhasil dihapus");
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		} else {
+			$this->session->set_flashdata('error', "Id Tidak ditemukan");
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		}
+	}
+
+
+
+
+
+
+
+
+
 	public function pegawai_lists()
 	{
 		header('Content-Type: application/json');

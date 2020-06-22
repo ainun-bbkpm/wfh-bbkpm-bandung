@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Pemantauan Kinerja WFH</title>
+    <title>Dashboard SiRAMAH</title>
 
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
 
@@ -28,6 +28,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <link rel="stylesheet" href="<?php echo site_url('assets/vendor/handsontable/handsontable.full.min.css') ?>">
 
+    <link rel="stylesheet" href="<?php echo site_url('assets/css/daterangepicker.css') ?>">
 
     <!-- <link href="https://cdn.jsdelivr.net/npm/handsontable@7.3.0/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> -->
 
@@ -43,14 +44,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 </head>
 
-<body>
+<body style="background-color: #1bbffa;">
     <div class="d-flex" id="wrapper">
 
 
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading bg-red">
-                <a href="<?php echo  base_url() ?>"> Work From Home</a>
+            <div class="sidebar-heading bg-red" style="background-color: #ACCE22;">
+                <a href="<?php echo  base_url() ?>"> SiRAMAH</a>
             </div>
             <div class="list-group list-group-flush">
                 <?php
@@ -62,6 +63,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <?PHP
                 }
                 ?>
+
 
 
 
@@ -106,19 +108,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
             </nav>
             <!-- Header End -->
 
-            <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+            <!-- Slider -->
+            <!-- <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="<?php echo base_url('assets/images/slider/slide1.jpg') ?>" class="d-block w-100" alt="...">
+                        <img src="<?php //echo base_url('assets/images/slider/slide1.jpg') 
+                                    ?>" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="<?php echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
+                        <img src="<?php// echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="<?php echo base_url('assets/images/slider/slide1.jpg') ?>" class="d-block w-100" alt="...">
+                        <img src="<?php //echo base_url('assets/images/slider/slide1.jpg') 
+                                    ?>" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="<?php echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
+                        <img src="<?php// echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
@@ -129,7 +134,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
+            </div> -->
+            <!-- Slider -->
 
 
             <div class="container-fluid mt-4">
@@ -140,11 +146,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 
-                <h3 class="mt-4">Selamat datang di Aplikasi Pemantauan Kinerja WFH BBKPM BANDUNG <br> <?php echo $this->session->nama_login ?></h3>
-                <div class="alert alert-danger" role="alert">
+                <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG<br> <?php echo $this->session->nama_login ?></h3>
+
+                <?php
+                if ($this->session->nip == "320") {
+                ?>
+                    <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
+                    <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
+
+                <?php
+                }
+                ?>
+
+                <div class="alert alert-danger mt-4" role="alert">
                     <h4 class="alert-heading">Perhatian!</h4>
                     <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
                     <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                    <p id="Pbiodata"> - Biodata saya <a class="btn btn-success btn-sm" href="<?php echo site_url('wfh/biodata_edit?id=') . $nip . "&token=" . sha1(sha1(md5($nip . md5($nip)))) ?>">Edit</a></p>
                     <hr>
                 </div>
 
@@ -293,6 +311,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <script src="<?php echo site_url('assets/vendor/lightbox2/js/lightbox.js') ?>"></script>
 
+
+    <script src="<?php echo site_url('assets/js/moment.min.js') ?>">
+    </script>
+    <script src="<?php echo site_url('assets/js/daterangepicker.js') ?>"> </script>
     <?php $this->load->view('_includes/js.php'); ?>
 
 
@@ -346,9 +368,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                 'Absen Berhasil',
                                                 '',
                                                 'success'
-                                            ).then(function(result) {
-                                                location.reload();
-                                            })
+                                            )
 
 
                                         } else {
@@ -471,7 +491,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             let folder = char1.split('.')['0']
 
 
-                            return '<a class="example-image-link" href="<?php echo site_url('uploads/wfh/') ?>' + folder + '/' + data + '" data-lightbox="example-set">' + data + '</a>'
+                            return '<a class="example-image-link" style="color:red;"  href="<?php echo site_url('uploads/wfh/') ?>' + folder + '/' + data + '" data-lightbox="example-set">' + data + '</a>'
 
 
                         }
@@ -745,12 +765,50 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 console.log('Masih password default');
 
                 $('#ganti_password').alert('show')
+                // $('#Pbiodata').show()
+                $('#Pbiodata').hide()
             } else {
+                $('#Pbiodata').show()
                 $('#ganti_password').alert('close')
                 console.log('Bukn password default');
             }
 
         }
+        $(function() {
+            let date = new Date();
+            $('#daterange').daterangepicker({
+                opens: 'right',
+                maxDate: date,
+                locale: {
+                    format: "DD-MM-YYYY"
+                }
+            }).on('apply.daterangepicker', function(ev, picker) {
+                Swal.showLoading();
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "<?php echo base_url("Approval/rekap") ?>");
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.responseType = 'blob';
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var fileURL = window.URL.createObjectURL(this.response);
+                        var a = document.createElement("a");
+                        a.setAttribute("target", "_blank");
+                        a.href = fileURL;
+                        a.show = "Rekap WFH.pdf";
+
+                        document.body.appendChild(a);
+                        a.click();
+                        Swal.fire('Download Berhasil', '', 'success');
+                        a.parentNode.removeChild(a);
+                    }
+                }
+
+                var request_params = 'begin=' + $('#daterange').val().split(' / ')[0];
+                request_params += '&end=' + $('#daterange').val().split(' / ')[1];
+                xhr.send(request_params);
+            });
+        });
     </script>
 </body>
 

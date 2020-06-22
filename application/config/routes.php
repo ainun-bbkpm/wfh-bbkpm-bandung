@@ -26,6 +26,10 @@ $route['dahsboard/pegawai/biodata'] = 'dashboard/biodata';
 //MODUL WFH
 
 $route['whf/login'] = 'whf/login';
+//Pegawai WFH
+$route['dashboard/pegawai/atasan_wfh'] = 'pegawai/atasan_wfh';
+$route['dashboard/pegawai/atasan_add_wfh'] = 'pegawai/atasan_add_wfh';
+$route['dashboard/pegawai/atasan_edit_wfh'] = 'pegawai/atasan_edit_wfh';
 
 
 
@@ -38,7 +42,6 @@ $route['dashboard/pegawai2/atasan'] = 'pegawai/atasan';
 $route['dashboard/pegawai2/atasan_add'] = 'pegawai/atasan_add';
 $route['dashboard/pegawai2/atasan_edit'] = 'pegawai/atasan_edit';
 $route['pegawai/ajax/staff'] = 'api/ajax/staff';
-
 
 
 //Penilaian
@@ -95,3 +98,7 @@ $route['pegawai'] = 'pegawai/dashboard';
 $route['pegawai/biodata'] = 'pegawai/biodata';
 $route['pegawai/wfh'] = 'wfh/pegawai';
 $route['pegawai/wfh/logbook'] = 'wfh/log_book';
+
+
+//Siaramah
+$route['dashboard/wfh'] = 'dashboard/dashboard_wfh';

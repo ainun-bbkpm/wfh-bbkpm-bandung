@@ -587,7 +587,7 @@ class Auth extends CI_Controller
                     'password' => $password
                 ];
                 $this->login->update($update, $this->session->id_login);
-                $this->session->set_flashdata('success', "Berhasil memperbaru akun");
+                $this->session->set_flashdata('success', "Berhasil memperbarui akun");
                 redirect('wfh');
             }
         } else {

@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Pemantauan Kinerja WFH</title>
+    <title>Dashboard Pemantauan SiRAMAH</title>
 
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
 
@@ -30,13 +30,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 </head>
 
-<body>
+<body style="background-color: #1bbffa;">
     <div class="d-flex" id="wrapper">
 
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading bg-red">
-                <a href="<?php echo  base_url() ?>"> Work From Home</a>
+            <div class="sidebar-heading bg-red" style="background-color: #ACCE22;">
+                <a href="<?php echo  base_url() ?>"> SiRAMAH</a>
             </div>
             <div class="list-group list-group-flush">
                 <?php
@@ -100,8 +100,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <!-- Notif end -->
 
 
-                <h3 class="mt-4">Selamat datang di Aplikasi Pemantauan Kinerja WFH BBKPM BANDUNG </h3>
-                <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap WFH</b></label>
+                <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG</h3>
+                <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
                 <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
 
                 <br>
@@ -109,7 +109,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <h3>
                     List Pegawai bawahan
                 </h3>
-                <button type="button" class="btn btn-primary setuju" onclick="laporan()"> <i class="fa fa-file-pdf"></i> Laporan WFH</button>
+                <button type="button" class="btn btn-primary setuju" onclick="laporan()"> <i class="fa fa-file-pdf"></i> Laporan SiRAMAH</button>
                 <div class="table-responsive mt-4">
                     <table id="example" class="table table-striped table-bordered table-sm" data-multiple-select-row="true" style="width:100%">
                         <thead>
@@ -205,7 +205,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </div>
 
     <footer class="footer bg-light border-right pl-4">
-        <h5>BBKPM BANDUNG @ 2019</h5>
+        <h5>BBKPM BANDUNG @ 2020</h5>
     </footer>
 
 

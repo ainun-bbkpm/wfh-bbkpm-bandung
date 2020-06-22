@@ -1,0 +1,67 @@
+var token;
+
+var settings = {
+  url: "https://x.rajaapi.com/poe",
+  method: "GET",
+  timeout: 0,
+};
+$.ajax(settings).done(function (response) {
+  if (response.code == 200) {
+    token = response.token;
+    //   return response.token;
+    // Swal.fire("Error");
+    var settingsProv = {
+      url: "https://x.rajaapi.com/MeP7c5ne" + token + "/m/wilayah/provinsi",
+      method: "GET",
+      timeout: 0,
+    };
+
+    $.ajax(settingsProv).done(function (response) {
+      var dataprov = response.data;
+      var arr = [];
+      $.each(dataprov, function (index, value) {
+        arr.push({
+          id: value.id,
+          text: value.name,
+        });
+      });
+      $(".js-data-example-ajax").select2({
+        data: arr,
+      });
+    });
+  } else {
+    Swal.fire("Error Token");
+  }
+});
+
+// get id provinsi
+function getKabKota(e) {
+  var id_prop = e.options[e.selectedIndex].value;
+  var link =
+    "https://x.rajaapi.com/MeP7c5ne" +
+    token +
+    "/m/wilayah/kabupaten?idpropinsi=" +
+    id_prop +
+    "";
+
+  $.ajax({
+    url: link,
+    method: "GET",
+    success: function (res) {
+      // return res.token;
+      var datakab = res.data;
+      var arr2 = [];
+      $.each(datakab, function (index, value) {
+        arr2.push({
+          id: value.id,
+          text: value.name,
+        });
+      });
+      console.log(arr2);
+      $("#kab_kota").select2({
+        data: arr2,
+        theme: "bootstrap4",
+      });
+    },
+  });
+}

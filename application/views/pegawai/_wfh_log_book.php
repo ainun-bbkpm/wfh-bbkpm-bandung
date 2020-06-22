@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Pemantauan Kinerja WFH</title>
+    <title>Dashboard Pemantauan SiRAMAH</title>
 
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
 
@@ -40,14 +40,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 </head>
 
-<body>
+<body style="background-color: #1bbffa;">
     <div class="d-flex" id="wrapper">
 
 
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading bg-red">
-                <a href="<?php echo  base_url() ?>"> Work From Home</a>
+            <div class="sidebar-heading bg-red" style="background-color: #ACCE22;">
+                <a href="<?php echo  base_url() ?>"> SiRAMAH</a>
             </div>
             <div class="list-group list-group-flush">
                 <?php
@@ -114,7 +114,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 
-                <h3 class="mt-4">Selamat datang di Sistem Informasi Kerja /WFH <?php echo $this->session->nama_login ?></h3>
+                <h3 class="mt-4">Selamat datang di Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH) BBKPM BANDUNG <?php echo $this->session->nama_login ?></h3>
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">Perhatian!</h4>
                     <p> - Setalah Absen masuk pegawai diharapkan mengisi Log Book</p>
@@ -129,13 +129,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="alert alert-primary" role="alert">
-                            <marquee behavior="" direction="">List Log Book WFH saya</marquee>
+                            <marquee behavior="" direction="">List Log Book SiRAMAH saya</marquee>
                         </div>
                         <div class="table-responsive-lg">
                             <table id="example" class="table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20px">Id</th>
 
                                         <th style="width: 90%">Uraian</th>
                                         <th>Output</th>
@@ -161,7 +160,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </div>
 
     <footer class="footer bg-light border-right pl-4">
-        <h5>BBKPM BANDUNG @ 2019</h5>
+        <h5>BBKPM BANDUNG @ 2020</h5>
     </footer>
 
 
@@ -380,9 +379,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 "ajax": "<?php echo  site_url('wfh/api_list_log_book_where_idwfh?id_wfh=') ?>" + id,
 
                 "columns": [{
-                        "data": "id_tr_log_wfh"
-                    },
-                    {
                         "data": "uraian_kegiatan"
                     },
                     {

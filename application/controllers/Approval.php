@@ -105,7 +105,7 @@ class Approval extends CI_Controller
     $nip_atasan = $this->session->nip;
 
     $data = [
-      'jml_bawahan' => $this->db->get_where('atasan', ['nip_atasan' => $nip_atasan])->num_rows(),
+      'jml_bawahan' => $this->db->get_where('atasan_wfh', ['nip_atasan' => $nip_atasan])->num_rows(),
       'detail_wfh' => $this->remun->getcapaianByIdAtasanWHF($nip_atasan)
     ];
 
@@ -123,7 +123,7 @@ class Approval extends CI_Controller
       'pegawai' => $pegawai,
       'id_wfh' => $id_wfh,
       'nip' => $nip,
-      'jml_bawahan' => $this->db->get_where('atasan', ['nip_atasan' => $nip_atasan])->num_rows(),
+      'jml_bawahan' => $this->db->get_where('atasan_wfh', ['nip_atasan' => $nip_atasan])->num_rows(),
       'nip_atasan' => $nip_atasan
     ];
 
@@ -216,8 +216,9 @@ class Approval extends CI_Controller
     }
   }
 
-  public function laporan_pilihan() {
-    $id_wfh = explode(',',$this->input->post('id_wfh'));
+  public function laporan_pilihan()
+  {
+    $id_wfh = explode(',', $this->input->post('id_wfh'));
     $this->load->library('M_pdf');
     foreach ($id_wfh as $key => $value) {
       $where['id_wfh'] = $value;
@@ -226,41 +227,59 @@ class Approval extends CI_Controller
       $pdf = $this->m_pdf->load();
 
       $pdf->AddpageByArray(array(
-            'orientation' => 'P',
-            'mgl' => '15',
-            'mgb' => '15',
-            'mgr' => '15',
-            'mgt' => '15',
-            'mgh' => '10',
-            'mgf' => '10',
-            'newformat' => array(210,330)));
+        'orientation' => 'P',
+        'mgl' => '15',
+        'mgb' => '15',
+        'mgr' => '15',
+        'mgt' => '15',
+        'mgh' => '10',
+        'mgf' => '10',
+        'newformat' => array(210, 330)
+      ));
       $pdf->WriteHTML($laporan);
     }
-    $pdf->Output('laporan',"I");
+    $pdf->Output('laporan', "I");
   }
 
-  public function rekap() {
+  public function rekap()
+  {
     $this->load->library('M_pdf');
-    $where['a'] = $this->session->nip;
-    $where['b'] = $this->session->nip;
-    $where['begin'] = $this->input->post('begin');
-    $where['end'] = $this->input->post('end');
-    $where['c'] = $this->session->nip;
-    $data['data'] = $this->remun->rekap($where);
+
+
+    if ($this->session->nip == "320") { //Untk jihan kepegawaian
+      # code...
+      $where['a'] = $this->session->nip;
+      $where['b'] = $this->session->nip;
+      $where['begin'] = $this->input->post('begin');
+      $where['end'] = $this->input->post('end');
+      $data['data'] = $this->remun->rekap_kepegawaian($where);
+    } else {
+      $where['a'] = $this->session->nip;
+      $where['b'] = $this->session->nip;
+      $where['begin'] = $this->input->post('begin');
+      $where['end'] = $this->input->post('end');
+      $where['c'] = $this->session->nip;
+      $data['data'] = $this->remun->rekap($where);
+      # code...
+    }
+
+
+    $data['date'] = str_replace('-', '/', $this->input->post('begin')) . ' - ' . str_replace('-', '/', $this->input->post('end'));
     $laporan = $this->load->view('approval/rekap.php', $data, TRUE);
-	
+
     $pdf = $this->m_pdf->load();
 
     $pdf->AddpageByArray(array(
-          'orientation' => 'P',
-          'mgl' => '15',
-          'mgb' => '15',
-          'mgr' => '15',
-          'mgt' => '15',
-          'mgh' => '10',
-          'mgf' => '10',
-          'newformat' => array(210,330)));
+      'orientation' => 'P',
+      'mgl' => '15',
+      'mgb' => '15',
+      'mgr' => '15',
+      'mgt' => '15',
+      'mgh' => '10',
+      'mgf' => '10',
+      'newformat' => array(210, 330)
+    ));
     $pdf->WriteHTML($laporan);
-    $pdf->Output('laporan',"I");
+    $pdf->Output('laporan', "I");
   }
 }

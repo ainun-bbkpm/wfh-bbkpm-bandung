@@ -7,7 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Login WFH</title>
+    <title>Dashboard Login SiRAMAH</title>
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?php echo site_url('assets/fontawesome/css/all.css') ?>">
 
@@ -43,7 +43,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
     // echo "<form>"
     ?>
     <img class="mb-4" src="<?php echo site_url('assets/images/Logo BBKPM 2_Polos.png')  ?>" alt="" width="250" height="100">
-    <div class="form-group ">
+    <h4><strong>SiRAMAH</strong> </h4>
+    <small>(Sistem Informasi Bekerja dari Rumah/WFH)</small>
+
+    <div class="form-group mt-4">
         <input type="text" class="form-control" name="username" required maxlength="50" placeholder="NIP atau NIK">
 
     </div>
