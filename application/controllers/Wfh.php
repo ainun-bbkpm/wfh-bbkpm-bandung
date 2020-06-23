@@ -808,6 +808,11 @@ class Wfh extends CI_Controller
                     'pegawailogin' => $datapegawai->row()
                 );
 
+                if ($this->session->has_userdata('login_wfh') != 1) {
+                    $this->session->set_flashdata('success', 'Anda sudah login');
+                    // echo "Sudah Login";
+                    redirect('wfh/login');
+                }
                 $this->load->view('wfh/biodata_edit', $data);
             } else {
                 $this->session->set_flashdata('error', "Id Tidak ditemukan");

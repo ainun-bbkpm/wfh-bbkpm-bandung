@@ -87,6 +87,7 @@ class Pegawai extends CI_Controller
 					'id_login' => $datalogin->row()->id_login,
 					'datalogin' => $this->login->find($datalogin->row()->id_login)->row(),
 					'pegawai_all' => $this->pegawai->getAll()->result()
+
 				);
 				// print_r($data['datalogin']);
 				$this->load->view('pegawai/biodata_edit', $data);
