@@ -408,10 +408,30 @@ class remun_m extends CI_Model
 
     public function rekap_kepegawaian($where)
     {
-        $sql = "SELECT COALESCE(B.nip2,B.nik) AS id, B.nama_pegawai, A.tgl_absen, A.jam_absen_hadir, A.jam_absen_pertengahan, A.jam_absen_pulang, A.nilai_kinerja, (SELECT C.nama_pegawai FROM pegawai C WHERE C.nip = ?) AS penilai, (SELECT D.nip2 FROM pegawai D WHERE D.nip = ?) AS nip
-        FROM ref_wfh A
+        $sql = "SELECT
+        COALESCE(B.nip2,B.nik) AS id,
+         B.nama_pegawai,
+          A.tgl_absen,
+          A.jam_absen_hadir,
+          A.jam_absen_pertengahan,
+          A.jam_absen_pulang,
+          A.nilai_kinerja
+        FROM
+        
+        ref_wfh A 
+        
         INNER JOIN pegawai B ON B.nip = A.id_pegawai
-        WHERE  DATE_FORMAT(A.tgl_absen,'%d-%m-%Y') BETWEEN ? AND ?";
+        
+       
+        -- WHERE  DATE_FORMAT(A.tgl_absen,'%d-%m-%Y') BETWEEN ? AND ?
+        
+        WHERE A.`tgl_absen`  BETWEEN ? AND ?
+
+        
+        ";
+
+
+
         $query = $this->db->query($sql, $where);
 
         return $query->result_array();

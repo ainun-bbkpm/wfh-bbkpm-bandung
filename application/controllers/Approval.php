@@ -250,8 +250,8 @@ class Approval extends CI_Controller
       # code...
       $where['a'] = $this->session->nip;
       $where['b'] = $this->session->nip;
-      $where['begin'] = $this->input->post('begin');
-      $where['end'] = $this->input->post('end');
+      $where['begin'] = date("Y-m-d", strtotime($this->input->post('begin')));
+      $where['end'] = date("Y-m-d", strtotime($this->input->post('end')));
       $data['data'] = $this->remun->rekap_kepegawaian($where);
     } else {
       $where['a'] = $this->session->nip;
@@ -264,6 +264,8 @@ class Approval extends CI_Controller
     }
 
 
+    // echo $this->db->last_query();
+    // die();
     $data['date'] = str_replace('-', '/', $this->input->post('begin')) . ' - ' . str_replace('-', '/', $this->input->post('end'));
     $laporan = $this->load->view('approval/rekap.php', $data, TRUE);
 
