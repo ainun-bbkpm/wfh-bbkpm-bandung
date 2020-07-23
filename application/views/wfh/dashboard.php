@@ -154,7 +154,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <script>
         $(document).ready(function() {
-            $('#example').DataTable();
+            $('#example').DataTable({
+                "order": [
+                    [1, "desc"],
+
+
+                ]
+            });
 
             $('#hapus').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal

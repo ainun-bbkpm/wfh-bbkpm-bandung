@@ -90,7 +90,22 @@ class Dashboard extends CI_Controller
 	public function dashboard_wfh()
 	{
 
-		$data['data_wfh'] = $this->wfh->getAllJoin();
+		$query = "SELECT
+			`id_wfh`,
+			`id_pegawai`,
+			pegawai.`nama_pegawai`,
+			`tgl_absen`,
+			`foto_absen_hadir`,
+			`jam_absen_hadir`,
+			`jam_absen_pertengahan`,
+			`jam_absen_pulang`,
+			`nilai_kinerja`
+			
+		FROM
+			`remunerasi`.`ref_wfh`
+		JOIN pegawai ON	ref_wfh.`id_pegawai`=pegawai.`nip`";
+
+		$data['data_wfh'] = $this->db->query($query);
 		$this->load->view('wfh\dashboard', $data);
 	}
 }
