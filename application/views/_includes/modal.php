@@ -13,6 +13,7 @@
             </div>
             <div class="modal-body">
                 Keluar aplikasi ?
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -38,7 +39,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                Keluar aplikasi ?
+
+                <h3>Keluar aplikasi ?</h3>
+                Pastikan anda tidak mengosongkan daftar hadir, karena akan berpengaruh terhadap penilaian
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
