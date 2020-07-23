@@ -64,9 +64,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 <th>ID</th>
                                 <th>Tgl Absen</th>
                                 <th>Nama</th>
-                                <th>jam_absen_hadir</th>
-                                <th>jam_absen_pertengahan</th>
-                                <th>jam_absen_pulang</th>
+                                <th>Jam absen hadir</th>
+                                <th>Jam absen pertengahan</th>
+                                <th>Jam absen pulang</th>
+                                <th>Nilai Kinerja</th>
 
                                 <th>Aksi</th>
                             </tr>
@@ -84,6 +85,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     <td><?php echo $wfh->jam_absen_hadir ?></td>
                                     <td><?php echo $wfh->jam_absen_pertengahan ?></td>
                                     <td><?php echo $wfh->jam_absen_pulang ?></td>
+                                    <td><?php echo $wfh->nilai_kinerja ?></td>
 
 
                                     <td>
