@@ -97,14 +97,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             }
                             ?>
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama</th>
 
-                                <th>Aksi</th>
-                            </tr>
-                        </tfoot>
                     </table>
                     <small>
                         Menampilkan halaman dalam <strong>{elapsed_time}</strong> detik.
