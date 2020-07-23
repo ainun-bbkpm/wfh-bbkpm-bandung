@@ -260,7 +260,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <script>
         $(document).ready(function() {
 
-            $('#example').DataTable();
+            $('#example').DataTable({
+                "order": [
+                    [5, "desc"],
+
+
+                ]
+            });
 
             $("body").on("click", ".tambah", function(e) {
 
