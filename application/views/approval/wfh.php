@@ -104,12 +104,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
                 <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
 
-                <br>
-                <br>
+                <button type="button" class="btn btn-primary setuju" onclick="laporan()"> <i class="fa fa-file-pdf"></i> Laporan SiRAMAH</button>
+                <div class="alert alert-warning mt-2" role="alert">
+                    <h4 class="alert-heading">Perhatian!</h4>
+                    <p>Pegawai yang tidak diberikan nilai selama 2 hari di hitung dari login absen SiRamah akan diberikan nilai otomatis 80 oleh sistem</p>
+                </div>
                 <h3>
                     List Pegawai bawahan
                 </h3>
-                <button type="button" class="btn btn-primary setuju" onclick="laporan()"> <i class="fa fa-file-pdf"></i> Laporan SiRAMAH</button>
                 <div class="table-responsive mt-4">
                     <table id="example" class="table table-striped table-bordered table-sm" data-multiple-select-row="true" style="width:100%">
                         <thead>
