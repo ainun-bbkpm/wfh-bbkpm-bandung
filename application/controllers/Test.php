@@ -790,4 +790,37 @@ class Test extends CI_Controller
         if ($end == null) $end = '23:59';
         return ($start <= date('H:i') && date('H:i') <= $end);
     }
+
+    public function upload_log_book()
+    {
+
+        // die();
+        $config['upload_path']          = "./uploads/wfh";
+        $config['allowed_types']        = 'xls|xlsx|pdf|jpg|jpeg|png|docx|doc|rar|zip|ppt|pptx';
+        // $config['max_size']             = 5000; // 5MB
+        $config['max_size']             = 85000; //80MN
+        $this->load->library('upload', $config);
+
+        // Load Library
+        if (!$this->upload->do_upload('output')) {
+            $error = $this->upload->display_errors();
+
+            $pesan = print_r($error);
+            $status = 2;
+            echo json_encode($pesan);
+        } else {
+            $data = $this->upload->data();
+
+            // $pesan = "File ada " .json_encode($data);
+            // $pesan = print_r($data);
+            $pesan = "Berhasil disipman ";
+            $status = 1;
+            $hasil = array(
+                'status' => $status,
+                'pesan' => $pesan,
+
+            );
+            echo json_encode($hasil);
+        }
+    }
 }
