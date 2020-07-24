@@ -162,6 +162,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <h4 class="alert-heading">Perhatian!</h4>
                     <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
                     <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                    <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
                     <p id="Pbiodata"> - Biodata saya <a class="btn btn-success btn-sm" href="<?php echo site_url('wfh/biodata_edit?id=') . $nip . "&token=" . sha1(sha1(md5($nip . md5($nip)))) ?>">Edit</a></p>
                     <hr>
                 </div>
@@ -520,7 +521,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         "data": "id_wfh",
                         "render": function(data, type, row) {
                             var key = (data);
+
                             return `
+                                   
                                     <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
                                     <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>
                     
