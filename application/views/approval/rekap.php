@@ -42,7 +42,7 @@
 			<th align="center" style="width: 17.5px; font-size: 18pt; vertical-align: middle;">NO</th>
 			<th style="width: 137.5px; font-size: 18pt; vertical-align: middle;">NIP / NIK</th>
 			<th style="width: 457.5px; font-size: 18pt; vertical-align: middle;">NAMA PEGAWAI WFH</th>
-			<th align="center" style="width: 97.5px; font-size: 18pt; vertical-align: middle;">TANGGAL ABSEN</th>
+			<th align="center" style="width: 97.5px; font-size: 18pt; vertical-align: middle;">TANGGAL WFH</th>
 			<th align="center" style="width: 97.5px; font-size: 18pt; vertical-align: middle;">JAM ABSEN MASUK</th>
 			<th align="center" style="width: 97.5px; font-size: 18pt; vertical-align: middle;">JAM ABSEN SIANG</th>
 			<th align="center" style="width: 97.5px; font-size: 18pt; vertical-align: middle;">JAM ABSEN PULANG</th>
