@@ -117,7 +117,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <h3 class="mt-4">Selamat datang di Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH) BBKPM BANDUNG <?php echo $this->session->nama_login ?></h3>
                 <div class="alert alert-danger" role="alert">
                     <h4 class="alert-heading">Perhatian!</h4>
-                    <p> - Setalah Absen masuk pegawai diharapkan mengisi Log Book</p>
+                    <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
+                    <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                    <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
+
                     <hr>
 
                 </div>
@@ -173,11 +176,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Log Book Kegiatan</h5>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Perhatian!</h4>
+                        <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
+                        <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                        <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
+
+                        <hr>
+
+                    </div>
                     <input type="textarea" name="uraian_kegiatan" style="height: 200px;" id="uraian_kegiatan" class="swal2-input" required>
                     <input type="file" name="output" id="output" required class="swal2-input" accept=".doc,.pdf,.docx,.zip,.rar,.xls,.xlsx,image/*" required>
                 </div>
