@@ -69,7 +69,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 <th>Jam absen pulang</th>
                                 <th>Nilai Kinerja</th>
 
-                                <th>Aksi</th>
+                                <!-- <th>Aksi</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -88,12 +88,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     <td><?php echo $wfh->nilai_kinerja ?></td>
 
 
-                                    <td>
+                                    <!-- <td>
                                         <div class="btn-group" role="group" aria-label="...">
-                                            <a href="<?php echo site_url("dashboard/wfh/edit?id=$wfh->id_wfh&token=" . sha1($wfh->id_wfh))  ?>" class="btn btn-primary btn-sm">Edit</a>
-                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapus" data-id="<?php echo $wfh->id_wfh ?>" data-link="<?php echo site_url('wfh/hapus')  ?>">Hapus</button>
+                                            <a href="<?php //echo site_url("dashboard/wfh/edit?id=$wfh->id_wfh&token=" . sha1($wfh->id_wfh))  
+                                                        ?>" class="btn btn-primary btn-sm">Edit</a>
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapus" data-id="<?php //echo $wfh->id_wfh 
+                                                                                                                                                    ?>" data-link="<?php echo site_url('wfh/hapus')  ?>">Hapus</button>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             <?php
                             }
