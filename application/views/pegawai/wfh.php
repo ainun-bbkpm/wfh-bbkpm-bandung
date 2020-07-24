@@ -118,6 +118,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <h4 class="alert-heading">Perhatian!</h4>
                     <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
                     <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                    <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
                     <hr>
                 </div>
 
@@ -187,6 +188,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Perhatian!</h4>
+
+                        <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
+                        <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
+
+                    </div>
                     <input type="hidden" name="id_wfh" id="id_wfh">
                     <p>Apakah anda merasakan demam hari ini ?</p>
                     <input type="radio" id="ya" class="demam" name="demam" value="Y">
@@ -257,7 +265,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <?php $this->load->view('_includes/js.php'); ?>
 
-    list_log_bookwfh(id_wfh);
+
 
     <!-- handsontable -->
 
@@ -465,11 +473,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         "data": "id_wfh",
                         "render": function(data, type, row) {
                             var key = (data);
-                            return `
-                                    <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
-                                    <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>
-                    
-                            `
+                            var date_now = new Date();
+                            var ts = new Date(row.tgl_absen)
+
+                            // add a day
+                            var d = ts.setDate(ts.getDate() + 2);
+                            var d = new Date(d);
+
+                            if (d > date_now) {
+
+                                // var s = 'belum Lewat'
+                                return `
+                             
+                                        <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
+                                        <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>
+                        
+                                `
+                            } else {
+                                return ``
+
+                            }
+                            // var s = d
+                            // console.log(d);
                         }
                     }
 
