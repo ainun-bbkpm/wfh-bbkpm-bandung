@@ -102,3 +102,4 @@ $route['pegawai/wfh/logbook'] = 'wfh/log_book';
 
 //Siaramah
 $route['dashboard/wfh'] = 'dashboard/dashboard_wfh';
+$route['dashboard/wfh/edit'] = 'wfh/edit';
