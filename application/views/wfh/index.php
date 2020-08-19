@@ -536,6 +536,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     {
                         "data": "tgl_absen"
                     },
+
+                    {
+                        "data": "jam_absen_hadir"
+                    },
+                    {
+                        "data": "jam_absen_pertengahan"
+                    },
+                    {
+                        "data": "jam_absen_pulang"
+                    },
                     {
                         "data": "foto_absen_hadir",
                         "render": function(data, type, row) {
@@ -549,15 +559,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
                         }
-                    },
-                    {
-                        "data": "jam_absen_hadir"
-                    },
-                    {
-                        "data": "jam_absen_pertengahan"
-                    },
-                    {
-                        "data": "jam_absen_pulang"
                     },
 
 
