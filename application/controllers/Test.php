@@ -823,4 +823,110 @@ class Test extends CI_Controller
             echo json_encode($hasil);
         }
     }
+
+
+    public function cek_absen_tengah()
+    {
+
+        $data = $this->db->query(" SELECT
+        `id_wfh`,
+        `id_pegawai`,
+        `tgl_absen`,
+        jam_absen_pertengahan
+        
+        FROM
+        `remunerasi`.`ref_wfh`
+
+
+        WHERE tgl_absen != '2020-08-17'
+        ")->result();
+
+        foreach ($data as $key => $value) {
+            // echo $value->id_wfh . '   -    ' . $value->jam_absen_pertengahan . "- query UPDATE ref_wfh SET jam_absen_pertengahan = '$value->jam_absen_pertengahan' WHERE `id_wfh` = '$value->id_wfh'; " . "<br>";
+            echo "UPDATE ref_wfh SET jam_absen_pertengahan = '$value->jam_absen_pertengahan' WHERE `id_wfh` = '$value->id_wfh'; " . "<br>";
+        }
+    }
+
+    public function rekap()
+    {
+        $this->load->library('M_pdf');
+
+
+        if ($this->session->nip == "320") { //Untk jihan kepegawaian
+            # code...
+            $where['a'] = $this->session->nip;
+            $where['b'] = $this->session->nip;
+            // $where['begin'] = date("Y-m-d", strtotime($this->input->post('begin')));
+            // $where['end'] = date("Y-m-d", strtotime($this->input->post('end')));
+            // $where['begin'] = $this->input->post('begin');
+            $where['begin'] =  date("Y-m-d", strtotime('2020-08-15'));
+            // $where['end'] = $this->input->post('end');
+            $where['end'] =  date("Y-m-d", strtotime('2020-08-17'));
+            $data['data'] = $this->remun->rekap_kepegawaian($where);
+        } else {
+            $where['a'] = $this->session->nip;
+            $where['b'] = $this->session->nip;
+            // $where['begin'] = $this->input->post('begin');
+            $where['begin'] = '2020-08-15';
+            // $where['end'] = $this->input->post('end');
+            $where['end'] = '2020-08-17';
+            $where['c'] = $this->session->nip;
+            $data['data'] = $this->remun->rekap($where);
+            # code...
+        }
+
+
+        // echo $this->db->last_query();
+        // die();
+        $data['date'] = str_replace('-', '/', $where['begin']) . ' - ' . str_replace('-', '/',  $where['end']);
+        $no = 1;
+        $no2 = 1;
+        $no3 = 1;
+        // foreach ($data['data'] as $key => $value) {
+        //     // print_r($value);
+        //     // echo $key[0];
+        //     // echo "<br>";
+        //     // echo "$no | $value[tgl_absen]  nama $value[nama_pegawai] " . "<br>";
+
+        //     if ($value['tgl_absen'] ==  $where['begin']) {
+        //         echo "$no ";
+        //         echo "<br>";
+        //         $no++;
+        //     }
+        //     if ($value['tgl_absen'] ==  '2020-08-16') {
+        //         echo "$no2 ";
+        //         echo "<br>";
+        //         $no2++;
+        //     }
+        //     if ($value['tgl_absen'] ==  $where['end']) {
+        //         echo "$no3 ";
+        //         echo "<br>";
+        //         $no3++;
+        //     }
+        // }
+        // echo 'asd';
+        // for ($i = 0; $i < count($data['data']); $i++) {
+
+        //     echo "$no | $data[data][$i][tgl_absen]  nama $data[data][$i][nama_pegawai] " . "<br>";
+        //     $no++;
+        //     if ($data['data'][$i]['tgl_absen'] != $data['data'][$i + 1]['tgl_absen']) $no = 1;
+        // }
+
+        $laporan = $this->load->view('approval/rekap.php', $data, TRUE);
+
+        $pdf = $this->m_pdf->load();
+
+        $pdf->AddpageByArray(array(
+            'orientation' => 'P',
+            'mgl' => '15',
+            'mgb' => '15',
+            'mgr' => '15',
+            'mgt' => '15',
+            'mgh' => '10',
+            'mgf' => '10',
+            'newformat' => array(210, 330)
+        ));
+        $pdf->WriteHTML($laporan);
+        $pdf->Output('laporan', "I");
+    }
 }

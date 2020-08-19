@@ -127,8 +127,25 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                 <!-- Tombol add log book-->
                 <a href="<?php echo site_url('pegawai/wfh') ?>" class="btn btn-warning"> <i class="fa fa-angle-double-left"></i> Kembali</a>
-                <button type="button" class="btn btn-primary tambah_log_book" onclick="add_log_book()"> <i class="fa fa-plus"></i> Tambah Log Book</button>
 
+                <?php
+                $data_wfh->tgl_absen;
+                $date_now =  Date('Y-m-d');
+                $ts =  Date($data_wfh->tgl_absen);
+
+                // // add a day
+                // var d = ts.setDate(ts.getDate() + 2);
+                // var d = new Date(d);
+
+                if ($date_now > $ts) {
+                    // echo "Lewat";
+
+                ?>
+                <?php } else { ?>
+                    <button type="button" class="btn btn-primary tambah_log_book" onclick="add_log_book()"> <i class="fa fa-plus"></i> Tambah Log Book</button>
+
+                <?php
+                } ?>
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="alert alert-primary" role="alert">
@@ -149,7 +166,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                             </table>
                         </div>
-                        <button type="button" onClick="simpan_logbook('<?php echo $_GET['id'] ?>')" class="btn btn-primary">Simpan Log Book</button>
+                        <?php
+                        $data_wfh->tgl_absen;
+                        $date_now =  Date('Y-m-d');
+                        $ts =  Date($data_wfh->tgl_absen);
+
+                        // // add a day
+                        // var d = ts.setDate(ts.getDate() + 2);
+                        // var d = new Date(d);
+
+                        if ($date_now > $ts) {
+                            // echo "Lewat";
+
+                        ?>
+                        <?php } else { ?>
+                            <button type="button" onClick="simpan_logbook('<?php echo $_GET['id'] ?>')" class="btn btn-primary">Simpan Log Book</button>
+                        <?php
+                        } ?>
                     </div>
                 </div>
 
@@ -402,11 +435,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         "data": "id_tr_log_wfh",
                         "render": function(data, type, row) {
                             var key = (data);
-                            return `
-                                   
-                                    <button type="button" class="btn btn-danger btn-sm hapus_log_book" onclick="hapus_log_book(` + key + `)" >Hapus</button>
-                    
-                            `
+                            <?php
+                            if ($data_wfh->status > 0) {
+
+                            ?>
+                                return ` `
+                            <?php } else { ?>
+
+                                return `
+                                        <button type="button" class="btn btn-danger btn-sm hapus_log_book" onclick="hapus_log_book(` + key + `)" >Hapus </button>
+                                        `
+                            <?php
+                            } ?>
+
+                            // return ` `
+
                         }
                     }
 

@@ -411,7 +411,7 @@ class Wfh extends CI_Controller
         if ($_FILES["file_selfie"]["error"] == 4) {
 
 
-            $pesan = "tidak ada file yang dipilih";
+            $pesan = "Tidak ada file yang dipilih";
             $status = 2;
         } else {
             //Buat folder
@@ -422,7 +422,7 @@ class Wfh extends CI_Controller
             $curldir = getcwd();
             $folderpath = FCPATH . "./uploads/wfh/$name_folder";
             if (is_dir($folderpath) == true) {
-                $pesan = "Hari ini anda sudah masuk";
+                $pesan = "Hari ini anda sudah masuk, Folder WFH anda sudah ada";
                 $status = 2;
             } else {
                 // $pesan="Tidak ada";
@@ -437,9 +437,12 @@ class Wfh extends CI_Controller
                     $this->load->library('upload', $config);
                     // Load Library
                     if (!$this->upload->do_upload('file_selfie')) {
+
                         $pesan = (array('error' => $this->upload->display_errors()));
                         $pesan = json_encode($pesan);
                         $status = 2;
+                        array_map('unlink', glob("$folderpath/*.*"));
+                        rmdir($folderpath);
                         // echo json_encode($error);
                         // $this->load->view('upload_form', $error);
                     } else {
@@ -557,9 +560,11 @@ class Wfh extends CI_Controller
             'level' => $this->session->level,
             'sidebar' => 'pegawai',
             'jml_bawahan' => $this->db->get_where('atasan', ['nip_atasan' => $nip])->num_rows(),
-            'id_wfh' => $this->input->get('id')
+            'id_wfh' => $this->input->get('id'),
+            'data_wfh' =>  $this->db->get_where('ref_wfh', ['id_wfh' =>  $this->input->get('id')])->row()
 
         ];
+
         $this->load->view('pegawai/_wfh_log_book', $data);
     }
 
@@ -823,5 +828,48 @@ class Wfh extends CI_Controller
             $this->session->set_flashdata('warning', "Token Bermasalah");
             redirect('wfh');
         }
+    }
+
+
+    public function edit()
+    {
+        $id_wfh = $this->input->get('id');
+        $data['wfh'] = $this->wfh->find($id_wfh)->row();
+        $this->load->view('wfh/dashboard_edit_wfh', $data);
+    }
+
+    public function wfh_update()
+    {
+        $id_wfh = $this->input->post('id_wfh');
+        $jam_absen_pertengahan = $this->input->post('jam_absen_pertengahan');
+        $jam_absen_pulang = $this->input->post('jam_absen_pulang');
+        $this->wfh->update(['jam_absen_pertengahan' => $jam_absen_pertengahan, 'jam_absen_pulang' => $jam_absen_pulang], ['id_wfh' => $id_wfh]);
+        redirect('dashboard/wfh');
+    }
+
+    public function hapus()
+    {
+        $id_wfh = $this->input->post('id_hapus');
+        $data = $this->wfh->find($id_wfh)->row();
+
+        $name_folder = $data->id_pegawai . "_" . $data->tgl_absen;
+        $curldir = getcwd();
+        $folderpath = FCPATH . "./uploads/wfh/$name_folder";
+        if (is_dir($folderpath) == true) {
+            // echo "Ada";
+            array_map('unlink', glob("$folderpath/*.*"));
+            rmdir($folderpath);
+            //Hapus
+            $this->db->delete('ref_wfh', ['id_wfh' => $id_wfh]);
+            $this->db->delete('tr_log_wfh', ['id_wfh' => $id_wfh]);
+        } else {
+            $this->db->delete('ref_wfh', ['id_wfh' => $id_wfh]);
+            $this->db->delete('tr_log_wfh', ['id_wfh' => $id_wfh]);
+        }
+        // $pesan="Tidak ada";
+        // $jam_absen_pertengahan = $this->input->post('jam_absen_pertengahan');
+        // $jam_absen_pulang = $this->input->post('jam_absen_pulang');
+        // $this->wfh->update(['jam_absen_pertengahan' => $jam_absen_pertengahan, 'jam_absen_pulang' => $jam_absen_pulang], ['id_wfh' => $id_wfh]);
+        redirect('dashboard/wfh');
     }
 }

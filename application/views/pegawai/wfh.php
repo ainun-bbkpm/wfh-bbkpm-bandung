@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Pemantauan SiRAMAH</title>
+    <title>Dashboard SiRAMAH</title>
 
     <link rel="shortcut icon" href="<?php echo site_url('assets/images/fav.png') ?>" type="image/x-icon">
 
@@ -28,6 +28,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <link rel="stylesheet" href="<?php echo site_url('assets/vendor/handsontable/handsontable.full.min.css') ?>">
 
+    <link rel="stylesheet" href="<?php echo site_url('assets/css/daterangepicker.css') ?>">
 
     <!-- <link href="https://cdn.jsdelivr.net/npm/handsontable@7.3.0/dist/handsontable.full.min.css" rel="stylesheet" media="screen"> -->
 
@@ -35,6 +36,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <!-- Custom page -->
     <link rel="stylesheet" href="<?php echo site_url('assets/css/custom.css') ?>">
+    <!-- Light Box -->
+
+    <link rel="stylesheet" href="<?php echo site_url('assets/vendor/lightbox2/css/lightbox.css') ?>">
 
 
 
@@ -104,6 +108,35 @@ defined('BASEPATH') or exit('No direct script access allowed');
             </nav>
             <!-- Header End -->
 
+            <!-- Slider -->
+            <!-- <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="<?php //echo base_url('assets/images/slider/slide1.jpg') 
+                                    ?>" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<?php// echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<?php //echo base_url('assets/images/slider/slide1.jpg') 
+                                    ?>" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="<?php// echo base_url('assets/images/slider/slide2.jpg') ?>" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div> -->
+            <!-- Slider -->
+
 
             <div class="container-fluid mt-4">
 
@@ -113,23 +146,43 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 
-                <h3 class="mt-4">Selamat datang di Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH) BBKPM BANDUNG / <?php echo $this->session->nama_login ?></h3>
-                <div class="alert alert-danger" role="alert">
+                <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG<br> <?php echo $this->session->nama_login ?></h3>
+
+                <?php
+                if ($this->session->nip == "320") {
+                ?>
+                    <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
+                    <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
+
+                <?php
+                }
+                ?>
+
+                <div class="alert alert-danger mt-4" role="alert">
                     <h4 class="alert-heading">Perhatian!</h4>
                     <p> - Setelah Absen masuk pegawai diharapkan mengisi Log Book</p>
                     <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
                     <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
+                    <p id="Pbiodata"> - Biodata saya <a class="btn btn-success btn-sm" href="<?php echo site_url('wfh/biodata_edit?id=') . $nip . "&token=" . sha1(sha1(md5($nip . md5($nip)))) ?>">Edit</a></p>
                     <hr>
                 </div>
+
+                <div class="alert alert-warning " role="alert" id="ganti_password">
+                    <strong>Upps!</strong>
+
+                    <br>
+
+                    Sepertinya password yang anda gunakan tidak aman. Silahkan ganti akun anda disini <a href="<?php echo site_url("auth/ganti_password?id=$nip&key=") . md5($nip) ?>">Ganti Password</a>
+                </div>
+
 
                 <!-- Tombol hadir masuk -->
                 <button type="button" class="btn btn-warning mt-4 hadir_masuk">Klik sini untuk Hadir Masuk</button>
 
                 <!-- Tombol Absen tengah -->
-                <button type="button" class="btn btn-secondary mt-4 absen_tengah" onclick="absen_tengah()">Klik sini untuk Hadir Pertengahan</button>
+                <button type="button" class="btn btn-secondary mt-4 absen_tengah" id="tengah" onclick="absen_tengah()">Klik sini untuk Hadir Pertengahan</button>
                 <!-- Tombol absen pulang -->
                 <button type="button" class="btn btn-success mt-4 absen_pulang" onclick="absen_pulang()">Klik sini untuk Absen Pulang</button>
-
 
 
 
@@ -142,15 +195,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             <table id="example" class="table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Id WFH</th>
 
+                                        <th>Aksi</th>
+                                        <th>Status</th>
                                         <th>Tgl Abs</th>
-                                        <th>Foto hadir</th>
                                         <th>Jam Masuk</th>
                                         <th>Jam pertengahan</th>
                                         <th>Jam Pulang</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th>Foto hadir</th>
+                                        <th>Id WFH</th>
 
                                     </tr>
                                 </thead>
@@ -170,7 +223,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </div>
 
     <footer class="footer bg-light border-right pl-4">
-        <h5>BBKPM BANDUNG @ 2019</h5>
+        <h5>BBKPM BANDUNG @ 2020</h5>
     </footer>
 
 
@@ -188,13 +241,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" role="alert">
-                        <h4 class="alert-heading">Perhatian!</h4>
-
-                        <p> - Absen tengah untuk jam 11:00 WIB sd 12:00 WIB</p>
-                        <p> - Pegawai yang tidak melakukan absen tengah dan absen pulang tidak akan mendapat nilai </p>
-
-                    </div>
                     <input type="hidden" name="id_wfh" id="id_wfh">
                     <p>Apakah anda merasakan demam hari ini ?</p>
                     <input type="radio" id="ya" class="demam" name="demam" value="Y">
@@ -263,8 +309,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     <script src="<?php echo site_url('assets/vendor/ajaxfileupload/ajaxfileupload.js') ?>"></script>
 
-    <?php $this->load->view('_includes/js.php'); ?>
 
+    <script src="<?php echo site_url('assets/vendor/lightbox2/js/lightbox.js') ?>"></script>
+
+
+    <script src="<?php echo site_url('assets/js/moment.min.js') ?>">
+    </script>
+    <script src="<?php echo site_url('assets/js/daterangepicker.js') ?>"> </script>
+    <?php $this->load->view('_includes/js.php'); ?>
 
 
     <!-- handsontable -->
@@ -320,8 +372,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                             ).then(function(result) {
                                                 location.reload();
                                             })
-
-
                                         } else {
                                             Swal.fire(
                                                 'Gagal Absen, Periksa file',
@@ -383,6 +433,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                 var no_abs = response.pegawai.no_abs
                 var nip = response.pegawai.nip
+
+
+
+
+
+                notif_password(response.pegawai.password)
                 list_wfh(nip);
                 //Jika whf hari ini ada yg aktif maka munculkan absen masuk, yg lain disembunyikan
                 if (response.wfh_hari_ini_aktif > 0) {
@@ -398,28 +454,30 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     if (response.wfh_telah_diajukan > 0) {
 
                         $('.hadir_masuk').hide()
-                    } else {
-                        if (response.wfh_hari_ini_setuju > 0) {
-                            $('.hadir_masuk').hide()
-                        } else {
-                            $('.hadir_masuk').show()
 
-                        }
+                    } else {
+
+                        $('.hadir_masuk').show()
+
+                        //if (response.wfh_hari_ini_setuju > 0) {
+                        //      $('.hadir_masuk').hide()
+                        // } else {
+                        //   $('.hadir_masuk').show()
+                        // }
                     }
+                }
+
+                if (response.absen_pertengahan > 0) {
+                    $('.absen_tengah').hide()
                 }
 
 
 
-            });
-            $.ajax(settings).fail(function(response) {
-                console.log(response);
 
-                Swal.fire(
-                    'Eror!',
-                    'Tejadi Kesalahan di API! Pegawai',
-                    'error'
-                )
+
+
             });
+
         }
 
         function list_wfh(nip) {
@@ -429,34 +487,40 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 "ajax": "<?php echo  site_url('wfh/api_list_where_nip?nip=') ?>" + nip,
 
                 "columns": [{
-                        "data": "id_wfh"
-                    },
-                    {
-                        "data": "tgl_absen"
-                    },
-                    {
-
-                        "data": "foto_absen_hadir",
+                        "data": "id_wfh",
                         "render": function(data, type, row) {
-                            let str = data
-                            let str1 = str.split('-')
-                            let char1 = str1['3'] + '-' + str1['4'] + '-' + str1['5']
-                            let folder = char1.split('.')['0']
+                            var key = (data);
+                            var status = row.status
+                            // var date_now = new Date();
+                            // var ts = new Date(row.tgl_absen)
 
+                            // // add a day
+                            // var d = ts.setDate(ts.getDate() + 2);
+                            // var d = new Date(d);
 
-                            return '<a class="example-image-link" href="<?php echo site_url('uploads/wfh/') ?>' + folder + '/' + data + '" data-lightbox="example-set">' + data + '</a>'
+                            // if (d > date_now) {
 
+                            // var s = 'belum Lewat'
+                            if (status == 0) {
 
+                                return `
+                                <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
+                                        <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>                     
+                                    `
+                            } else {
+                                return `
+                                            <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
+                                        
+                                    `
+
+                            }
+                            // } else {
+                            //     return ``
+
+                            // }
+                            // var s = d
+                            // console.log(d);
                         }
-                    },
-                    {
-                        "data": "jam_absen_hadir"
-                    },
-                    {
-                        "data": "jam_absen_pertengahan"
-                    },
-                    {
-                        "data": "jam_absen_pulang"
                     },
                     {
                         "data": "status",
@@ -470,39 +534,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         }
                     },
                     {
-                        "data": "id_wfh",
+                        "data": "tgl_absen"
+                    },
+                    {
+                        "data": "foto_absen_hadir",
                         "render": function(data, type, row) {
-                            var key = (data);
-                            var date_now = new Date();
-                            var ts = new Date(row.tgl_absen)
+                            let str = data
+                            let str1 = str.split('-')
+                            let char1 = str1['3'] + '-' + str1['4'] + '-' + str1['5']
+                            let folder = char1.split('.')['0']
 
-                            // add a day
-                            var d = ts.setDate(ts.getDate() + 2);
-                            var d = new Date(d);
 
-                            if (d > date_now) {
+                            return '<a class="example-image-link" style="color:red;"  href="<?php echo site_url('uploads/wfh/') ?>' + folder + '/' + data + '" data-lightbox="example-set">' + data + '</a>'
 
-                                // var s = 'belum Lewat'
-                                return `
-                             
-                                        <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
-                                        <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>
-                        
-                                `
-                            } else {
-                                return ``
 
-                            }
-                            // var s = d
-                            // console.log(d);
                         }
+                    },
+                    {
+                        "data": "jam_absen_hadir"
+                    },
+                    {
+                        "data": "jam_absen_pertengahan"
+                    },
+                    {
+                        "data": "jam_absen_pulang"
+                    },
+
+
+                    {
+                        "data": "id_wfh"
                     }
 
                 ],
                 rowId: 'id_wfh',
                 "bDestroy": true,
                 "order": [
-                    [1, "desc"],
+                    [7, "desc"],
 
 
                 ]
@@ -547,14 +614,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                                     // console.log(res);
 
-                                    // if (res.status == 1) {
-                                    //     Swal.fire(
-                                    //         'Absen Berhasil',
-                                    //         '',
-                                    //         'success'
-                                    //     ).then(function(result) {
-                                    //         location.reload();
-                                    //     })
+                                    Swal.fire(
+                                        'Absen Berhasil',
+                                        '',
+                                        'success'
+                                    ).then(function(result) {
+                                        location.reload();
+                                    })
 
 
                                     // } else {
@@ -689,7 +755,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
             var id_wfh = $("#id_wfh").val();
 
 
-
+            console.log(demam);
+            console.log(batuk);
+            console.log(sesak);
+            console.log(nyeri);
             $.ajax({
                 url: '<?php echo site_url('wfh/tambah_isi_kesehatan') ?>',
                 method: 'POST',
@@ -726,6 +795,56 @@ defined('BASEPATH') or exit('No direct script access allowed');
             })
 
         }
+
+        function notif_password(pass) { //Function ini berfungsi jika passwordnya masih default maka kasih link ke lain
+            if (pass == '8a9e7c2b32371723439f990d4beabb02') {
+                console.log('Masih password default');
+
+                $('#ganti_password').alert('show')
+                // $('#Pbiodata').show()
+                $('#Pbiodata').hide()
+            } else {
+                $('#Pbiodata').show()
+                $('#ganti_password').alert('close')
+                console.log('Bukn password default');
+            }
+
+        }
+        $(function() {
+            let date = new Date();
+            $('#daterange').daterangepicker({
+                opens: 'right',
+                maxDate: date,
+                locale: {
+                    format: "DD-MM-YYYY"
+                }
+            }).on('apply.daterangepicker', function(ev, picker) {
+                Swal.showLoading();
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "<?php echo base_url("Approval/rekap") ?>");
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.responseType = 'blob';
+
+                xhr.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var fileURL = window.URL.createObjectURL(this.response);
+                        var a = document.createElement("a");
+                        a.setAttribute("target", "_blank");
+                        a.href = fileURL;
+                        a.show = "Rekap WFH.pdf";
+
+                        document.body.appendChild(a);
+                        a.click();
+                        Swal.fire('Download Berhasil', '', 'success');
+                        a.parentNode.removeChild(a);
+                    }
+                }
+
+                var request_params = 'begin=' + $('#daterange').val().split(' / ')[0];
+                request_params += '&end=' + $('#daterange').val().split(' / ')[1];
+                xhr.send(request_params);
+            });
+        });
     </script>
 </body>
 

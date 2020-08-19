@@ -180,7 +180,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <button type="button" class="btn btn-warning mt-4 hadir_masuk">Klik sini untuk Hadir Masuk</button>
 
                 <!-- Tombol Absen tengah -->
-                <button type="button" class="btn btn-secondary mt-4 absen_tengah" onclick="absen_tengah()">Klik sini untuk Hadir Pertengahan</button>
+                <button type="button" class="btn btn-secondary mt-4 absen_tengah" id="tengah" onclick="absen_tengah()">Klik sini untuk Hadir Pertengahan</button>
                 <!-- Tombol absen pulang -->
                 <button type="button" class="btn btn-success mt-4 absen_pulang" onclick="absen_pulang()">Klik sini untuk Absen Pulang</button>
 
@@ -195,15 +195,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
                             <table id="example" class="table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Id WFH</th>
 
+                                        <th>Aksi</th>
+                                        <th>Status</th>
                                         <th>Tgl Abs</th>
-                                        <th>Foto hadir</th>
                                         <th>Jam Masuk</th>
                                         <th>Jam pertengahan</th>
                                         <th>Jam Pulang</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th>Foto hadir</th>
+                                        <th>Id WFH</th>
 
                                     </tr>
                                 </thead>
@@ -369,9 +369,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                 'Absen Berhasil',
                                                 '',
                                                 'success'
-                                            )
-
-
+                                            ).then(function(result) {
+                                                location.reload();
+                                            })
                                         } else {
                                             Swal.fire(
                                                 'Gagal Absen, Periksa file',
@@ -437,6 +437,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 
+
                 notif_password(response.pegawai.password)
                 list_wfh(nip);
                 //Jika whf hari ini ada yg aktif maka munculkan absen masuk, yg lain disembunyikan
@@ -453,6 +454,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     if (response.wfh_telah_diajukan > 0) {
 
                         $('.hadir_masuk').hide()
+
                     } else {
 
                         $('.hadir_masuk').show()
@@ -464,6 +466,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         // }
                     }
                 }
+
+                if (response.absen_pertengahan > 0) {
+                    $('.absen_tengah').hide()
+                }
+
+
+
 
 
 
@@ -478,7 +487,51 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 "ajax": "<?php echo  site_url('wfh/api_list_where_nip?nip=') ?>" + nip,
 
                 "columns": [{
-                        "data": "id_wfh"
+                        "data": "id_wfh",
+                        "render": function(data, type, row) {
+                            var key = (data);
+                            var status = row.status
+                            // var date_now = new Date();
+                            // var ts = new Date(row.tgl_absen)
+
+                            // // add a day
+                            // var d = ts.setDate(ts.getDate() + 2);
+                            // var d = new Date(d);
+
+                            // if (d > date_now) {
+
+                            // var s = 'belum Lewat'
+                            if (status == 0) {
+
+                                return `
+                                <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
+                                        <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>                     
+                                    `
+                            } else {
+                                return `
+                                            <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
+                                        
+                                    `
+
+                            }
+                            // } else {
+                            //     return ``
+
+                            // }
+                            // var s = d
+                            // console.log(d);
+                        }
+                    },
+                    {
+                        "data": "status",
+                        "render": function(data, type, row) {
+                            if (data === '0') {
+                                return '<span class="badge badge-primary"><i class="fa fa-spinner"></i> Sedang berlangsung</span>'
+                            } else {
+                                return '<span class="badge badge-danger"><i class="fa fa-check"></i> Selesai</span>'
+                            }
+                            return data
+                        }
                     },
                     {
                         "data": "tgl_absen"
@@ -506,36 +559,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     {
                         "data": "jam_absen_pulang"
                     },
-                    {
-                        "data": "status",
-                        "render": function(data, type, row) {
-                            if (data === '0') {
-                                return '<span class="badge badge-primary"><i class="fa fa-spinner"></i> Sedang berlangsung</span>'
-                            } else {
-                                return '<span class="badge badge-danger"><i class="fa fa-check"></i> Selesai</span>'
-                            }
-                            return data
-                        }
-                    },
-                    {
-                        "data": "id_wfh",
-                        "render": function(data, type, row) {
-                            var key = (data);
 
-                            return `
-                                   
-                                    <a href="<?php echo site_url('pegawai/wfh/logbook?id=') ?>` + key + ` "  class="btn btn-info btn-sm">Isi Log Book</a>
-                                    <button onClick="add_kesehatan(` + key + `)"  class="btn btn-success btn-sm">Isi Kesehatan</button>
-                    
-                            `
-                        }
+
+                    {
+                        "data": "id_wfh"
                     }
 
                 ],
                 rowId: 'id_wfh',
                 "bDestroy": true,
                 "order": [
-                    [1, "desc"],
+                    [7, "desc"],
 
 
                 ]
@@ -580,14 +614,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                                     // console.log(res);
 
-                                    // if (res.status == 1) {
-                                    //     Swal.fire(
-                                    //         'Absen Berhasil',
-                                    //         '',
-                                    //         'success'
-                                    //     ).then(function(result) {
-                                    //         location.reload();
-                                    //     })
+                                    Swal.fire(
+                                        'Absen Berhasil',
+                                        '',
+                                        'success'
+                                    ).then(function(result) {
+                                        location.reload();
+                                    })
 
 
                                     // } else {

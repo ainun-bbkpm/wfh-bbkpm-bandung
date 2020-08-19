@@ -60,7 +60,6 @@ class Wfh_m extends CI_Model
 
     public function hapus($id)
     {
-        // $this->db->delete('ref_jabatan',['id_wfh'=>$id]);
         return $this->db->delete('ref_wfh', ['id_wfh' => $id]);
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
@@ -57,57 +56,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <a href="<?php echo site_url('dashboard/wfh/tambah') ?>" class="btn btn-success btn-sm">Tambah
                     WFH/SiRAMAH</a>
 
-
-                <div class="table-responsive mt-4">
-                    <table id="example" class="table table-striped table-bordered table-sm" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tgl Absen</th>
-                                <th>Nama</th>
-                                <th>Jam absen hadir</th>
-                                <th>Jam absen pertengahan</th>
-                                <th>Jam absen pulang</th>
-                                <th>Nilai Kinerja</th>
-
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data_wfh->result() as $wfh) {
-                                # code...
-
-                            ?>
-                                <tr>
-                                    <td><?php echo $wfh->id_wfh ?></td>
-                                    <td><?php echo $wfh->tgl_absen ?></td>
-                                    <td><?php echo $wfh->nama_pegawai ?></td>
-                                    <td><?php echo $wfh->jam_absen_hadir ?></td>
-                                    <td><?php echo $wfh->jam_absen_pertengahan ?></td>
-                                    <td><?php echo $wfh->jam_absen_pulang ?></td>
-                                    <td><?php echo $wfh->nilai_kinerja ?></td>
-
-
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="...">
-                                            <a href="<?php echo site_url("dashboard/wfh/edit?id=$wfh->id_wfh&token=" . sha1($wfh->id_wfh))
-                                                        ?>" class="btn btn-primary btn-sm">Edit</a>
-                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#hapus" data-id="<?php echo $wfh->id_wfh
-                                                                                                                                                    ?>" data-link="<?php echo site_url('wfh/hapus')  ?>">Hapus</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-
-                    </table>
-                    <small>
-                        Menampilkan halaman dalam <strong>{elapsed_time}</strong> detik.
-                    </small>
-                </div>
+                <form action="<?php echo site_url('wfh/wfh_update') ?>" method="post">
+                    <input type="text" class="form-control" name="id_wfh" id="" readonly value="<?php echo $wfh->id_wfh ?>">
+                    <input type="text" class="form-control" name="jam_absen_pertengahan" value="<?php echo $wfh->jam_absen_pertengahan ?>">
+                    <input type="text" class="form-control" name="jam_absen_pulang" value="<?php echo $wfh->jam_absen_pulang ?>">
+                    <input type="text" class="form-control" name="status" value="<?php echo $wfh->status ?>">
+                    <button type="submit">Update</button>
+                </form>
 
             </div>
 
@@ -155,7 +110,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
             $('#example').DataTable({
                 "order": [
                     [1, "desc"],
-                    [3, "desc"],
 
 
                 ]
