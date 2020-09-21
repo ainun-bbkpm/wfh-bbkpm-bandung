@@ -112,6 +112,7 @@ class Auth extends CI_Controller
                             ];
                             // print_r($admin);
                             // die();
+                            $this->sendToTelegram($admin->nama_login);
                             $this->session->set_userdata($datasession);
                             $this->session->set_flashdata('success', "Selamat datang $admin->nama_login");
                             redirect('dashboard');
@@ -152,8 +153,7 @@ class Auth extends CI_Controller
                                 'level' => $approval->level,
                                 'login' => true
                             ];
-                            // print_r($approval);
-                            // die();
+                            $this->sendToTelegram($approval->nama_login);
                             $this->session->set_userdata($datasession);
                             $this->session->set_flashdata('success', "Selamat datang $approval->nama_login");
                             redirect('approval');
@@ -197,8 +197,7 @@ class Auth extends CI_Controller
                                 'level' => $penilai->level,
                                 'login' => true
                             ];
-                            // print_r($penilai);
-                            // die();
+                            $this->sendToTelegram($penilai->nama_login);
                             $this->session->set_userdata($datasession);
                             $this->session->set_flashdata('success', "Selamat datang $penilai->nama_login");
                             redirect('penilai');
@@ -242,8 +241,7 @@ class Auth extends CI_Controller
                                 'level' => $pegawai->level,
                                 'login' => true
                             ];
-                            // print_r($pegawai);
-                            // die();
+                            $this->sendToTelegram($pegawai->nama_login);
                             $this->session->set_userdata($datasession);
                             $this->session->set_flashdata('success', "Selamat datang $pegawai->nama_login");
                             redirect('pegawai');
@@ -595,5 +593,30 @@ class Auth extends CI_Controller
             // redirect('auth/login');
             echo "<script>history.go(-2)</script>";
         }
+    }
+
+    public function sendToTelegram($nama)
+    {
+        //Notif To telegram
+        $curl = curl_init();
+
+        $jam = date('Y-m-d H:i:s');
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.telegram.org/bot1342201521:AAGKLDljBK_5HihtCqBj-i29irgcXEGiu8E/sendMessage",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg masuk WFH pegawai $nama pada $jam "),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+        //Notif To telegram End
     }
 }

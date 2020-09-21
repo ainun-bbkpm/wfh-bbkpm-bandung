@@ -120,25 +120,36 @@ class Wfh extends CI_Controller
                         'id_login' => $admin->id_login,
                         'nip' => $admin->nip_pegawai,
                         'nama_login' => $admin->nama_login,
-                        //     'id_unit_kerja'=> $admin->id_unit_kerja,
-                        //     'hak_akses_unit_kerja'=> $admin->hak_akses_unit_kerja,
-                        //     'id_jabatan'=> $admin->id_jabatan,
-                        //     'hak_akses_jabatan'=> $admin->hak_akses_jabatan,
                         'level' => $admin->level,
                         'login_wfh' => true
                     ];
                     // print_r($admin);
+                    //Notif To telegram
+                    $curl = curl_init();
+                    $nama = $admin->nama_login;
+                    $jam = date('Y-m-d H:i:s');
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => "https://api.telegram.org/bot1342201521:AAGKLDljBK_5HihtCqBj-i29irgcXEGiu8E/sendMessage",
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => "",
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => "POST",
+                        CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg masuk WFH pegawai $nama pada $jam "),
+                    ));
+
+                    $response = curl_exec($curl);
+
+                    curl_close($curl);
+                    echo $response;
+                    //Notif To telegram End
                     $this->session->set_userdata($datasession);
                     $this->session->set_flashdata('success', "Selamat datang $admin->nama_login");
-                    // print_r($this->session);
-                    // die();
-                    redirect('wfh');
 
-                    $this->db->query("INSERT INTO `remunerasi`.`tes` (`nama`)
-                    VALUES
-                      ('$username dan $hi');
-        
-                    ");
+
+                    redirect('wfh');
                 }
             } else {
 
