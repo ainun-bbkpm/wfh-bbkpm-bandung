@@ -929,4 +929,15 @@ class Test extends CI_Controller
         $pdf->WriteHTML($laporan);
         $pdf->Output('laporan', "I");
     }
+
+    public function cekSite()
+    {
+        // echo $site = str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+        $dat['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+        $dat['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
+        echo $dat['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+        // echo str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+        // print_r($dat);
+        // echo $this->session->userdata($site)['role'];
+    }
 }
