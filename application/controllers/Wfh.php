@@ -128,6 +128,12 @@ class Wfh extends CI_Controller
                     $curl = curl_init();
                     $nama = $admin->nama_login;
                     $jam = date('Y-m-d H:i:s');
+                    $PublicIP = $this->get_client_ip();
+                    $json     = file_get_contents("http://ipinfo.io/$PublicIP/geo");
+                    $json     = json_decode($json, true);
+                    $country  = $json['country'];
+                    $region   = $json['region'];
+                    $city     = $json['city'];
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => "https://api.telegram.org/bot1342201521:AAGKLDljBK_5HihtCqBj-i29irgcXEGiu8E/sendMessage",
                         CURLOPT_RETURNTRANSFER => true,
@@ -137,7 +143,7 @@ class Wfh extends CI_Controller
                         CURLOPT_FOLLOWLOCATION => true,
                         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                         CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg masuk WFH pegawai $nama pada $jam "),
+                        CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg masuk WFH pegawai $nama pada $jam IP  $PublicIP City  $city   "),
                     ));
 
                     $response = curl_exec($curl);
@@ -882,5 +888,27 @@ class Wfh extends CI_Controller
         // $jam_absen_pulang = $this->input->post('jam_absen_pulang');
         // $this->wfh->update(['jam_absen_pertengahan' => $jam_absen_pertengahan, 'jam_absen_pulang' => $jam_absen_pulang], ['id_wfh' => $id_wfh]);
         redirect('dashboard/wfh');
+    }
+
+    public function get_client_ip()
+    {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        } else if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else if (isset($_SERVER['HTTP_X_FORWARDED'])) {
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        } else if (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        } else if (isset($_SERVER['HTTP_FORWARDED'])) {
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        } else if (isset($_SERVER['REMOTE_ADDR'])) {
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ipaddress = 'UNKNOWN';
+        }
+
+        return $ipaddress;
     }
 }
