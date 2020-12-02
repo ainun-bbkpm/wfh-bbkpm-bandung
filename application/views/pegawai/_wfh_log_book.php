@@ -521,9 +521,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         }
 
         function tambah_logbook() {
-            Swal.fire(
-                'Proses',
-            )
+            Swal.fire('Proses', )
             Swal.showLoading()
 
 
@@ -596,6 +594,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Yes'
                     }).then((result) => {
+
+                        Swal.fire('Proses Simpan', )
+                        Swal.showLoading()
                         if (result.value) {
                             $.ajax({
                                 url: '<?php echo site_url('wfh/simpan_log_book') ?>',

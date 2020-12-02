@@ -347,6 +347,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 $('#jam_masuk').val(jam_masuk)
                             }
                         }).then(function(result) {
+                            Swal.fire('Proses Simpan Absen Hadir', )
+                            Swal.showLoading()
                             if (result.value) {
 
                                 $.ajaxFileUpload({
@@ -597,6 +599,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         cancelButtonColor: '#d33',
 
                     }).then(function(result) {
+
+                        Swal.fire('Proses Simpan Absen Tengah', )
+                        Swal.showLoading()
                         if (result.value) {
 
                             $.ajax({
@@ -679,6 +684,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         cancelButtonColor: '#d33',
 
                     }).then(function(result) {
+                        Swal.fire('Proses Simpan Absen Pulang', )
+                        Swal.showLoading()
                         if (result.value) {
 
                             $.ajax({
@@ -702,7 +709,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                             'Absen Pulang Berhasil',
                                             json.pesan,
                                             'success'
-                                        )
+                                        ).then(function(result) {
+                                            location.reload();
+                                        })
+
 
                                     } else {
                                         Swal.fire(
