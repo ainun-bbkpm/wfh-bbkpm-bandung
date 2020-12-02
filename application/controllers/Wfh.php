@@ -143,7 +143,7 @@ class Wfh extends CI_Controller
                         CURLOPT_FOLLOWLOCATION => true,
                         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                         CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg masuk WFH pegawai $nama pada $jam IP  $PublicIP City  $city   "),
+                        CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg Login WFH pegawai $nama pada $jam IP  $PublicIP City  $city   "),
                     ));
 
                     $response = curl_exec($curl);
@@ -476,6 +476,33 @@ class Wfh extends CI_Controller
                         $this->wfh->simpan($data);
                         $pesan = "Berhasil";
                         $status = 1;
+
+                        //Notif To telegram
+                        $curl = curl_init();
+                        $nama = $this->session->nama_login;
+                        $jam = date('Y-m-d H:i:s');
+                        $PublicIP = $this->get_client_ip();
+                        $json     = file_get_contents("http://ipinfo.io/$PublicIP/geo");
+                        $json     = json_decode($json, true);
+                        $country  = $json['country'];
+                        $region   = $json['region'];
+                        $city     = $json['city'];
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => "https://api.telegram.org/bot1342201521:AAGKLDljBK_5HihtCqBj-i29irgcXEGiu8E/sendMessage",
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => "",
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 0,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => "POST",
+                            CURLOPT_POSTFIELDS => array('chat_id' => '387598258', 'text' => "Ada yg absen hadir WFH pegawai $nama pada $jam IP  $PublicIP City  $city   "),
+                        ));
+
+                        $response = curl_exec($curl);
+
+                        curl_close($curl);
+                        // echo $response;
                     }
                 } else {
                     $pesan = "Gagal Buat Folder";
