@@ -56,10 +56,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="list-group list-group-flush">
                 <?php
                 if ($jml_bawahan > 0) {
-                    # code...
+                    echo "<script>alert('Silahakan Nilai Pegawai bawahan anda di menu sebelah kanan Approval ')</script>";
                 ?>
 
                     <a href="<?php echo  site_url('approval/wfh') ?>" class="list-group-item list-group-item-action bg-light">Approval <span class="badge badge-primary">New</span></a>
+
+
                 <?PHP
                 }
                 ?>
@@ -89,7 +91,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         <!-- <li class="nav-item active">
                             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
+                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
                         </li> -->
                         <li class="nav-item dropdown">
@@ -149,7 +151,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG<br> <?php echo $this->session->nama_login ?></h3>
 
                 <?php
-                if ($this->session->nip == "320") {
+                if ($this->session->nip == "130") {
                 ?>
                     <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
                     <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
@@ -347,8 +349,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                 $('#jam_masuk').val(jam_masuk)
                             }
                         }).then(function(result) {
-                            Swal.fire('Proses Simpan Absen Hadir', )
-                            Swal.showLoading()
+                            // Swal.fire('Proses Simpan Absen Hadir', )
+                            // Swal.showLoading()
                             if (result.value) {
 
                                 $.ajaxFileUpload({
@@ -361,7 +363,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     },
                                     dataType: "text",
                                     success: function(json, status) {
-
+                                        console.log(json);
                                         var res = JSON.parse(json)
 
                                         console.log(res);
@@ -684,8 +686,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         cancelButtonColor: '#d33',
 
                     }).then(function(result) {
-                        Swal.fire('Proses Simpan Absen Pulang', )
-                        Swal.showLoading()
+                        // Swal.fire('Proses Simpan Absen Pulang', )
+                        // Swal.showLoading()
                         if (result.value) {
 
                             $.ajax({
