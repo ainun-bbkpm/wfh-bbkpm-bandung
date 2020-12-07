@@ -151,7 +151,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG<br> <?php echo $this->session->nama_login ?></h3>
 
                 <?php
-                if ($this->session->nip == "130") {
+                if ($this->session->nip == "130" || $this->session->nip == "155") {
                 ?>
                     <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
                     <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
