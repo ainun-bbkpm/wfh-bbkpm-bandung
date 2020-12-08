@@ -887,7 +887,8 @@ class Wfh extends CI_Controller
         $id_wfh = $this->input->post('id_wfh');
         $jam_absen_pertengahan = $this->input->post('jam_absen_pertengahan');
         $jam_absen_pulang = $this->input->post('jam_absen_pulang');
-        $this->wfh->update(['jam_absen_pertengahan' => $jam_absen_pertengahan, 'jam_absen_pulang' => $jam_absen_pulang], ['id_wfh' => $id_wfh]);
+        $status = $this->input->post('status');
+        $this->wfh->update(['jam_absen_pertengahan' => $jam_absen_pertengahan, 'jam_absen_pulang' => $jam_absen_pulang, 'status' => $status], ['id_wfh' => $id_wfh]);
         redirect('dashboard/wfh');
     }
 
