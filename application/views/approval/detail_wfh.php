@@ -121,7 +121,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <!-- Tombol add log book-->
             <a href="<?php echo site_url('approval/wfh') ?>" class="btn btn-warning"> <i class="fa fa-angle-double-left"></i> Kembali</a>
             <button type="button" class="btn btn-primary setuju" onclick="setuju('<?php echo $id_wfh ?>')"> <i class="fa fa-plus"></i> Setuju dan Nilai</button>
-
+            <div class="alert alert-warning mt-2" role="alert">
+                <h4 class="alert-heading">Perhatian!</h4>
+                <p>- Jika link foto absensi ada tapi tidak muncul ketika di klik, maka hubungi IT</p>
+                <p>- Jika link log book pegawai ada tapi tidak muncul ketika di klik, maka hubungi IT</p>
+                <small><i>Data mungkin sudah di backup untuk optimasi server</i></small>
+            </div>
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="alert alert-danger" role="alert">
