@@ -87,7 +87,7 @@ class Login extends CI_Controller
                     $no_hp = $this->input->post('no_hp');
                 } else {
                     # code...
-                    $no_hp = "08123456789";
+                    $no_hp = "0211212122";
                 }
 
                 if ($this->input->post('username')) {
