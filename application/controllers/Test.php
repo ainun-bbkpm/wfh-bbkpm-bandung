@@ -933,11 +933,129 @@ class Test extends CI_Controller
     public function cekSite()
     {
         // echo $site = str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
-        $dat['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-        $dat['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
-        echo $dat['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+        // $dat['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+        // $dat['base_url'] .= "://" . $_SERVER['HTTP_HOST'];
+        // echo $dat['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+
+        // $site = explode('/', base_url())[2];
+        $site = str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+
+        echo $site;
         // echo str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
         // print_r($dat);
         // echo $this->session->userdata($site)['role'];
+    }
+
+
+    function capthca()
+    {
+        $this->load->helper('captcha');
+        $this->load->view('test/captcha');
+    }
+
+    public function recaptcha()
+    {
+
+        // load from CI library
+        $this->load->library('recaptcha');
+
+        $recaptcha = $this->input->post('g-recaptcha-response');
+        if (!empty($recaptcha)) {
+            $response = $this->recaptcha->verifyResponse($recaptcha);
+            if (isset($response['success']) and $response['success'] === true) {
+                echo "You got it!";
+            }
+        }
+
+        $data = array(
+            'widget' => $this->recaptcha->getWidget(),
+            'script' => $this->recaptcha->getScriptTag(),
+        );
+        $this->load->view('test/recaptcha', $data);
+    }
+    public function recaptchaPost()
+    {
+        $recaptchaResponse = trim($this->input->post('g-recaptcha-response'));
+
+
+
+        $userIp = $this->input->ip_address();
+
+
+
+        $secret = '6LcZas8ZAAAAANAoqwYs0kvTMzsuXJCghD_MZVeB';
+
+
+
+        $url = "https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $recaptchaResponse . "&remoteip=" . $userIp;
+
+
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $output = curl_exec($ch);
+        if (curl_exec($ch) === false) {
+            echo 'Curl error: ' . curl_error($ch);
+        } else {
+        }
+
+        curl_close($ch);
+
+        // echo $output;
+        // die();
+        $status = json_decode($output, true);
+
+
+
+        if ($status['success']) {
+
+            print_r('Google Recaptcha Successful');
+
+            exit;
+        } else {
+
+            // echo 'Sorry Google Recaptcha Unsuccessful!!';
+            $this->session->set_flashdata('flashError', 'Sorry Google Recaptcha Unsuccessful!!');
+        }
+
+
+
+        redirect('test/recaptcha', 'refresh');
+    }
+
+
+    public function ceknamasession()
+    {
+        echo $this->session->nama_login;
+        // print_r($this->session->userdata());
+    }
+
+    public function apiexcel()
+    {
+
+        $nama = "GScript";
+        $log_date = date('Y-m-d H:i:s');
+        $this->db->insert('tes', ['nama' => json_encode($_POST), 'log_date' => $log_date]);
+        $data['status'] = 1;
+        $data['pesan'] = "Berhasil";
+        $response = $data;
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+            ->_display();
+        exit;
+        break;
+    }
+
+    public function apiexcelok()
+    {
+        echo "ok";
     }
 }
