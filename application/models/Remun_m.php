@@ -426,7 +426,7 @@ class remun_m extends CI_Model
         -- WHERE  DATE_FORMAT(A.tgl_absen,'%d-%m-%Y') BETWEEN ? AND ?
         
         WHERE A.`tgl_absen`  BETWEEN ? AND ?
-
+        ORDER BY nama_pegawai ASC
         
         ";
 
