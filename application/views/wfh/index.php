@@ -56,7 +56,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="list-group list-group-flush">
                 <?php
                 if ($jml_bawahan > 0) {
-                    echo "<script>alert('Silahakan Nilai Pegawai bawahan anda di menu sebelah kanan Approval ')</script>";
+                    echo "<script>alert('Silahakan Nilai Pegawai bawahan anda di menu sebelah kanan Approval, abaikan jika sudah.')</script>";
                 ?>
 
                     <a href="<?php echo  site_url('approval/wfh') ?>" class="list-group-item list-group-item-action bg-light">Approval <span class="badge badge-primary">New</span></a>
@@ -151,7 +151,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <h3 class="mt-4">Selamat datang<br />Aplikasi SiRAMAH (Sistem Informasi Bekerja dari Rumah/WFH)<br />BBKPM BANDUNG<br> <?php echo $this->session->nama_login ?></h3>
 
                 <?php
-                if ($this->session->nip == "130" || $this->session->nip == "155") {
+                if ($this->session->nip == "130" || $this->session->nip == "320") {
                 ?>
                     <label><b>Pilih Tanggal Untuk Mengunduh Laporan Rekap SiRAMAH</b></label>
                     <input type="text" class="form-control col-md-3" id="daterange" placeholder="Range Tanggal">
